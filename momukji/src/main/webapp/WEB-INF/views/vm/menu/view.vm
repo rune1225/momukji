@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="ko">
+<head>
+#parse("/WEB-INF/views/vm/includefile/header.vm")
+</head>
+<body>
+	<div class="wrapper">
+		<!-- header -->
+		<header class="header">
+			<h1 class="txt_page_title" mr_no="$!{res.mr_No}">$res.mr_Name</h1>
+			<button type="button" class="btn_gnb" title="네비게이션 보기"></button>
+			<button type="button" class="btn_home" title="메인으로 이동" onclick="goPage('/now/main');"></button>
+		</header>
+		<!-- slide nav -->
+		<div class="nav_dim_area"></div>
+		<nav class="slide_nav">
+			<button type="button" id="" name="" class="btn_slide_nav_close"></button>
+			<div class="nav_box">
+				<div class="top">
+					<img src="/resources/images/common/img_header_logo.png" alt="모먹지" />
+				</div>
+				<div class="bottom">
+					<div class="user_info">
+					#if($sessioncount > 0)
+						<p class="name">$userSession.mc_Name</p>
+						<p class="email">$userSession.mc_Email</p>
+						<a href="javascript:;" class="btn_modify_info">회원정보 수정</a>
+					</div>
+					<ul class="gnb">
+							<li><a href="javascript:;">내정보</a></li>
+							<li><a href="javascript:;" onclick="logOutAjaxLoad($!{userSession.mc_No});">로그아웃</a></li>
+							<!--<li><a href="javascript:;">즐겨찾기</a></li>-->
+					</ul>
+					#else
+						<p class="email">로그인을 해주시기바랍니다</p>
+						<a href="javascript:;" class="btn_modify_info" onclick="goPage('/customer/login');">로그인</a>
+					</div>
+					<ul class="gnb">
+							<li><a href="javascript:;" onclick="goPage('/customer/join/1');">회원가입</a></li>
+					</ul>
+					#end
+				</div>
+				<button type="button" class="btn_kakao">
+					<img src="/resources/images/common/ico_gnb_kakao.png" alt="" />
+					실시간 상담하기
+				</button>
+			</div>
+		</nav>
+		<!-- container -->
+
+		<div class="container store_detail">
+			<div class="detail_header">
+				<div class="photo">
+					<img src="$!{res.mri_Img_Url}$!{res.mri_ResImg_Name}" alt="" />
+				</div>
+				<button type="button" id="" name="" class="btn_favorite on"></button>
+				<div class="info">
+					<div class="visit">
+						<dl>
+							<dt>Today</dt>
+							<dd>$res.mrvc_todayCount</dd>
+						</dl>
+						<dl>
+							<dt>Total</dt>
+							<dd>$res.mrvc_totalCount</dd>
+						</dl>
+					</div>
+					<div class="option">
+						<!-- 해당하는 옵션에 on 클래스 추가 (해당하지 않으면 on 클래스 제거) -->
+						<span class="stat parking #if($res.mr_ParkingYn==1)on#end">주차</span>
+						<span class="stat delivery #if($res.mr_DeliveryYn==1)on#end">배달</span>
+					</div>
+				</div>
+			</div>
+			<nav class="category">
+				<ul>
+					<li class="category01 curr" pagecategory="01"><a href="javascript:;">Menu Guide</a></li>
+					<li class="category02" pagecategory="02"><a href="javascript:;">전체메뉴</a></li>
+					<li class="category03" pagecategory="03"><a href="javascript:;">리뷰</a></li>
+					<li class="category04" pagecategory="04"><a href="javascript:;">이벤트</a></li>
+					<li class="category05" pagecategory="05"><a href="javascript:;">업체정보</a></li>
+				</ul>
+			</nav>
+			<div class="ajaxchange">
+				<div class="menu_guide">
+					<ul>
+						#foreach($menu in $menuList)
+						<li>
+							<div class="mark">
+								#if($menu.mm_Type == 1)
+								<span class="title">고객 추천1위</span>
+								<img src="/resources/images/common/ico_customer_recommend.png" alt="" class="ico" />
+								#elseif($menu.mm_Type == 2)
+								<span class="title">이달 판매1위</span>
+								<img src="/resources/images/common/ico_month_winner.png" alt="" class="ico" />
+								#elseif($menu.mm_Type == 3)
+								<span class="title">사장님 강추</span>
+								<img src="/resources/images/common/ico_owner_recommend.png" alt="" class="ico" />
+								#end
+							</div>
+							<div class="menu_info">
+								<div class="photo">
+									<a href="javascript:;" onclick="pictureLayerOpen('picture_detail', '$!{menu.mmi_Img_Url}$!{menu.mmi_MenuImg_Name}');">
+										<img src="$!{menu.mmi_Img_Url}$!{menu.mmi_MenuImg_Name}" alt="" onerror="this.src = '/resources/images/common/bg_food_default.gif'"/>
+									</a>
+								</div>
+								<div class="info">
+									<strong class="menu">$!{menu.mm_Name}</strong>
+									<div class="grade">
+										#if($menu.mm_Score_Sum == 5.0)
+										<img src="/resources/images/common/img_point50.gif" alt="" />
+										#elseif($menu.mm_Score_Sum > 4.4 && $menu.mm_Score_Sum < 5.0)
+										<img src="/resources/images/common/img_point45.gif" alt="" />
+										#elseif($menu.mm_Score_Sum > 3.9 && $menu.mm_Score_Sum < 4.5)
+										<img src="/resources/images/common/img_point40.gif" alt="" />
+										#elseif($menu.mm_Score_Sum > 3.4 && $menu.mm_Score_Sum < 4.0)
+										<img src="/resources/images/common/img_point35.gif" alt="" />
+										#elseif($menu.mm_Score_Sum > 2.9 && $menu.mm_Score_Sum < 3.5)
+										<img src="/resources/images/common/img_point30.gif" alt="" />
+										#elseif($menu.mm_Score_Sum > 2.4 && $menu.mm_Score_Sum < 3.0)
+										<img src="/resources/images/common/img_point25.gif" alt="" />
+										#elseif($menu.mm_Score_Sum > 1.9 && $menu.mm_Score_Sum < 2.5)
+										<img src="/resources/images/common/img_point20.gif" alt="" />
+										#elseif($menu.mm_Score_Sum > 1.4 && $menu.mm_Score_Sum < 2.0)
+										<img src="/resources/images/common/img_point15.gif" alt="" />
+										#elseif($menu.mm_Score_Sum > 0.9 && $menu.mm_Score_Sum < 1.5)
+										<img src="/resources/images/common/img_point10.gif" alt="" />
+										#elseif($menu.mm_Score_Sum > 0.4 && $menu.mm_Score_Sum < 1.0)
+										<img src="/resources/images/common/img_point05.gif" alt="" />
+										#elseif($menu.mm_Score_Sum < 0.5)
+										<img src="/resources/images/common/img_point00.gif" alt="" />
+										#end
+										$!{menu.mm_Score_Sum}
+									</div>
+									<span class="price">$!{menu.mm_Price}원</span>
+								</div>
+								<a href="javascript:;" class="btn_review" onclick="selectmenureview($!{menu.mm_No});">리뷰</a>
+							</div>
+							<div class="summary show">
+								<p>$!{menu.mm_Contents}</p>
+								<a href="javsacript:;" class="btn_close">X 창닫기</a>
+							</div>
+						</li>
+						#end
+					</ul>
+				</div>
+				<div class="store_info" style="display:none;">
+					<p class="txt_summary">
+						$!{res.mr_Introduce}
+					</p>
+					<div class="info_tbl">
+						<h2 class="title">업체정보</h2>
+						<table>
+							<colgroup>
+								<col style="width:25%;" />
+								<col style="width:75%;" />
+							</colgroup>
+							<tbody>
+								<tr>
+									<th>주소</th>
+									<td>$!{res.mr_Address}</td>
+								</tr>
+								<tr>
+									<th>전화번호</th>
+									<td>$!{res.mr_Phone}</td>
+								</tr>
+								<tr>
+									<th>좌석</th>
+									<td>$!{res.mr_Seat}석</td>
+								</tr>
+								<tr>
+									<th>영업시간</th>
+									<td>$!{res.mr_OpenTime}</td>
+								</tr>
+								<tr>
+									<th>휴일</th>
+									<td>$!{res.mr_ClosingDay}</td>
+								</tr>
+								<tr>
+									<th>주차가능</th>
+									<td>#if($res.mr_ParkingYn == 1)가능#else불가#end</td>
+								</tr>
+								<tr>
+									<th>배달가능</th>
+									<td>#if($res.mr_DeliveryYn == 1)가능#else불가#end</td>
+								</tr>
+								<tr>
+									<th>배달지역</th>
+									<td>$!{res.mr_DeliveryArea}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="map_area" id="map_area" style="width:350px;height:250px;">
+						<!-- 지도영역 100% * 250px-->	
+					</div>
+				</div>
+			</div>
+		</div>
+		#parse("/WEB-INF/views/vm/includefile/footer.vm")
+	</div>
+
+<!-- 리뷰작성 -->
+<article class="layer_popup_wrap write_review">
+	<div class="dim_area" onclick="commonLayerClose('write_review')"></div>
+	<div class="layer_cont">
+		<button type="button" id="" name="" class="btn_layer_close" onclick="commonLayerClose('write_review')"><img src="/resources/images/common/btn_layer_close.png" alt=""></button>
+		<div class="layer_title">리뷰작성</div>
+		<div class="form_box">
+			<div class="custom_selectbox">
+				<label for="choice_menu">메뉴선택</label>
+				<select id="choice_menu">
+					<option selected="selected">메뉴선택</option>
+				</select>
+			</div>
+			<div class="point_area">
+				<span class="minus star_change"><img src="/resources/images/common/btn_grade_minus.png" alt="-"></span>
+				<div class="avg_point">
+					<!-- 별점 직접 선택할 수 있는 투명 버튼 -->
+					<div class="direct">
+						<button type="button" class="btn_direct"></button>
+						<button type="button" class="btn_direct"></button>
+						<button type="button" class="btn_direct"></button>
+						<button type="button" class="btn_direct"></button>
+						<button type="button" class="btn_direct"></button>
+					</div>
+					<img src="/resources/images/common/bg_grade_point.png" alt="">
+					<em class="star_point">8</em>
+				</div>
+				<span class="plus star_change"><img src="/resources/images/common/btn_grade_plus.png" alt="+"></span>
+			</div>
+			<p class="txt_guide">메뉴의 별점을 선택해주세요.</p>
+			<div class="textarea_box">
+				<textarea id="reviewcontents" name="" placeholder="30자 이내로 내용을 입력해주세요."></textarea>
+			</div>
+			<button type="button" id="submitreview" name="" class="btn_common_red">작성하기</button>
+		</div>
+	</div>
+</article>
+
+<!-- 아래 로딩 화면에 표시하려면 page_loading에 show 클래스 추가 -->
+<div class="page_loading">
+	<div class=""></div>
+	<div class="loading_cont">
+		<strong><img src="/resources/images/common/img_loading_visual.png" alt="화면 로딩중 ..." /></strong>
+		<div class="animate">
+		  <div class="ball01"></div>
+		  <div class="ball02"></div>
+		  <div class="ball03"></div>
+		  <div class="ball04"></div>
+		  <div class="ball05"></div>
+		</div>
+	</div>
+</div>
+
+<!-- 사진 상세보기 레이어팝업 -->
+<article class="layer_popup_wrap picture_detail">
+	<div class="dim_area" onclick="commonLayerClose('picture_detail')"></div>
+	<div class="layer_cont">
+		<!-- 해당 이미지 출력 -->
+		<img src="images/img_boonsik_sample.jpg" alt="" class="picture" onerror="this.src = '/resources/images/common/bg_food_default.gif'"/>
+	</div>
+</article>
+
+#parse("/WEB-INF/views/vm/includefile/scriptlink.vm")
+<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=2291e9c6aea4f7c31bf27569b97202de&libraries=services,clusterer,drawing"></script>
+<script>
+
+var mapflag = false;
+var page = 0;
+
+function createMap(lat, lng){
+
+	var markerPosition  = new daum.maps.LatLng(lat, lng); 
+	
+	var marker = {
+	    position: markerPosition
+	};
+
+	var container = document.getElementById('map_area'); //지도를 담을 영역의 DOM 레퍼런스
+	var options = { //지도를 생성할 때 필요한 기본 옵션
+		center: new daum.maps.LatLng(lat, lng), //지도의 중심좌표
+		level: 5, //지도의 레벨(확대, 축소 정도)
+		marker: marker, // 이미지 지도에 표시할 마커
+		autosize:true
+	};
+	
+	var map = new daum.maps.StaticMap(container, options);
+
+}
+// 레이어 내 메뉴명 리스트 호출
+menunamelistAjaxLoad($('.header h1.txt_page_title').attr('mr_no'), '../menunamelist');
+
+//mainmenu
+$('.store_detail .category ul li').on('click', function(){
+	
+	if($(this).hasClass('curr')){
+		return;
+	}else{
+	
+		page = 0;//리뷰페이징 초기화
+	
+		$(this).parent().find('li').removeClass('curr');
+		$(this).addClass('curr');
+		
+		if($(this).attr('pagecategory')=='01'){//메뉴가이드
+		
+			$('.store_detail .ajaxchange').children().hide();
+			$('.store_detail .ajaxchange .menu_guide').show();
+			
+			
+		}else if($(this).attr('pagecategory')=='02'){//전체메뉴
+			
+			entiremenuAjaxLoad($('.header h1.txt_page_title').attr('mr_no'), $('.store_detail .ajaxchange'), $('.store_detail'), "../entiremenu");
+		
+		}else if($(this).attr('pagecategory')=='03'){//리뷰
+		
+			menureviewAjaxLoad($('.header h1.txt_page_title').attr('mr_no'), '',$('.store_detail .ajaxchange'), "../menureview", page);
+		
+		}else if($(this).attr('pagecategory')=='04'){//이벤트
+		
+			alert("준비중입니다.");
+		
+		}else if($(this).attr('pagecategory')=='05'){//업체정보
+		
+			$('.store_detail .ajaxchange').children().hide();
+			$('.store_detail .ajaxchange .store_info').show();
+			
+			if(mapflag == false){
+			
+				createMap($!{res.mr_Position_Lat}, $!{res.mr_Position_Lng});
+				
+				mapflag = true;
+				
+			}
+		
+		}
+	}
+	
+});
+
+//selectmenureview
+function selectmenureview(mm_no){
+	
+	$('.store_detail .category ul').find('li').removeClass('curr');
+	
+	$('.store_detail .category ul li.category03').addClass('curr');
+	
+	menureviewAjaxLoad('', mm_no,$('.store_detail .ajaxchange'), "../menureview", page);
+	$('select').val(mm_no).prop("selected", true);
+	$('select').siblings("label").text($('select').children("option:selected").text());
+}
+
+
+//favorite
+$('.detail_header .btn_favorite').on('click', function(){
+	if($(this).hasClass('on')){
+		$(this).removeClass('on');
+	}else{
+		$(this).addClass('on');
+	}
+});
+
+//스크롤 최하단
+$(window).scroll(function(){
+
+	if($('.store_detail .category ul li.category03').hasClass('curr')){
+		if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+
+			page++;
+			console.log("최하단 페이징:"+page);
+			menureviewAjaxLoad($('.header h1.txt_page_title').attr('mr_no'), '',$('.store_detail .ajaxchange'), "../menureview", page);			
+        	
+    	}
+	}
+      
+   
+});
+
+</script>
+
+</body>
+</html>

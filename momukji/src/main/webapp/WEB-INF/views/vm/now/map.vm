@@ -1,0 +1,135 @@
+
+<!doctype html>
+<html lang="ko">
+<head>
+#parse("/WEB-INF/views/vm/includefile/header.vm")
+	<style>
+		html {height:100%;}
+	</style>
+</head>
+#set($res = $!{restaurantList.get(0)})
+<body class="full_height">
+	<div class="wrapper full_height">
+		<!-- header -->
+		<header class="header">
+			<h1 class="txt_page_title">$!{res.mr_Name}</h1>
+			<button type="button" class="btn_page_back" title="이전페이지로 돌아가기" onclick="navback()"></button>
+		</header>
+		<!-- container -->
+		<div class="container full_height">
+			<div class="store_map">
+			
+				<div class="map_area" id="map">
+					<!-- 지도 영역 width:100% height:100% -->
+				</div>
+				
+				<a href="tel:$!{res.mr_Phone}" class="btn_call">
+					<img src="../resources/images/common/ico_page_call.png" alt="" />
+					전화걸기
+				</a>
+					
+				
+			</div>
+			
+		</div>	
+	</div>
+#parse("/WEB-INF/views/vm/includefile/scriptlink.vm")
+<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=2291e9c6aea4f7c31bf27569b97202de&libraries=services,clusterer,drawing"></script>
+<script>
+	
+var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+var options = { //지도를 생성할 때 필요한 기본 옵션
+	center: new daum.maps.LatLng($!{res.mr_Position_Lat}, $!{res.mr_Position_Lng}), //지도의 중심좌표
+	level: 3 //지도의 레벨(확대, 축소 정도)
+};
+
+var map = new daum.maps.Map(container, options);
+
+// 마커가 표시될 위치입니다 
+var markerPosition  = new daum.maps.LatLng($!{res.mr_Position_Lat}, $!{res.mr_Position_Lng}); 
+
+// 마커를 생성합니다
+var marker = new daum.maps.Marker({
+    position: markerPosition
+});
+
+// 마커가 지도 위에 표시되도록 설정합니다
+marker.setMap(map);
+
+// 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+// marker.setMap(null);
+
+// 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
+var iwContent = '<div class="store_info">'+
+					'<div class="infos">'+
+						'<dl class="first">'+
+							'<dt>메뉴명</dt>'+
+							'<dd>$!{res.mm_Name}</dd>'+
+						'</dl>'+
+						'<dl>'+
+							'<dt>평점</dt>'+
+							#if($res.mr_Score_Sum == 5.0)
+							'<dd><img src="/resources/images/common/img_point50.gif" alt="5.0" class="point" />'
+							#elseif($res.mr_Score_Sum > 4.4 && $res.mr_Score_Sum < 5.0)
+							'<dd><img src="/resources/images/common/img_point45.gif" alt="4.5" class="point" />'
+							#elseif($res.mr_Score_Sum > 3.9 && $res.mr_Score_Sum < 4.5)
+							'<dd><img src="/resources/images/common/img_point40.gif" alt="4.0" class="point" />'
+							#elseif($res.mr_Score_Sum > 3.4 && $res.mr_Score_Sum < 4.0)
+							'<dd><img src="/resources/images/common/img_point35.gif" alt="3.5" class="point" />'
+							#elseif($res.mr_Score_Sum > 2.9 && $res.mr_Score_Sum < 3.5)
+							'<dd><img src="/resources/images/common/img_point30.gif" alt="3.0" class="point" />'
+							#elseif($res.mr_Score_Sum > 2.4 && $res.mr_Score_Sum < 3.0)
+							'<dd><img src="/resources/images/common/img_point25.gif" alt="2.5" class="point" />'
+							#elseif($res.mr_Score_Sum > 1.9 && $res.mr_Score_Sum < 2.5)
+							'<dd><img src="/resources/images/common/img_point20.gif" alt="2.0" class="point" />'
+							#elseif($res.mr_Score_Sum > 1.4 && $res.mr_Score_Sum < 2.0)
+							'<dd><img src="/resources/images/common/img_point15.gif" alt="1.5" class="point" />'
+							#elseif($res.mr_Score_Sum > 0.9 && $res.mr_Score_Sum < 1.5)
+							'<dd><img src="/resources/images/common/img_point10.gif" alt="1.0" class="point" />'
+							#elseif($res.mr_Score_Sum > 0.4 && $res.mr_Score_Sum < 1.0)
+							'<dd><img src="/resources/images/common/img_point05.gif" alt="0.5" class="point" />'
+							#elseif($res.mr_Score_Sum < 0.5)
+							'<dd><img src="/resources/images/common/img_point00.gif" alt="0.0" class="point" />'
+							#end
+							+' $!{res.mr_Score_Sum}</dd>'+
+						'</dl>'+
+						'<dl>'+
+							'<dt>거리</dt>'+
+							'<dd>$!{res.distance}km 미만</dd>'+
+						'</dl>'+
+						'<dl>'+
+							'<dt>주소</dt>'+
+							'<dd>$!{res.mr_Address}</dd>'+
+						'</dl>'+
+						'<button type="button" class="btn_close" title="레이어 닫기"></button>'+
+					'</div>'+
+				'</div>'; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+
+// 인포윈도우를 생성합니다
+var infowindow = new daum.maps.InfoWindow({
+    content : iwContent,
+});
+
+// 커스텀 오버레이가 표시될 위치입니다 
+var position = new daum.maps.LatLng($!{res.mr_Position_Lat}, $!{res.mr_Position_Lng});  
+
+// 커스텀 오버레이를 생성합니다
+var customOverlay = new daum.maps.CustomOverlay({
+    position: position,
+    content: iwContent,
+    xAnchor: 0.0,
+    yAnchor: 1.50
+});
+
+// 마커에 클릭이벤트를 등록합니다
+daum.maps.event.addListener(marker, 'click', function() {
+      
+		
+});
+
+// 커스텀 오버레이를 지도에 표시합니다
+customOverlay.setMap(map);
+
+</script>
+</body>
+</html>

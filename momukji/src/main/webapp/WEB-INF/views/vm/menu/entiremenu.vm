@@ -1,0 +1,35 @@
+<!-- s : all_menu -->
+<div class="all_menu">
+	<ul>
+	#set($categoryidx = 0)
+	#foreach($menu in $menuList)
+	
+	#if($menu.mmc_No != $categoryidx)
+		#if($menu.mmc_No > 1)
+		</li>
+		</ul>
+		#end
+		<li #if($menu.mmc_No == 1)class="show"#end>
+			<a href="javascript:;" class="main_menu">$menu.mmc_Name</a>
+			<ul>
+				<li>
+				<p class="sub_menu">$menu.mm_Name</p>
+				<a href="javascript:;" class="btn_review" onclick="selectmenureview($!{menu.mm_No});"><img src="/resources/images/common/btn_all_menu_review.png" alt="리뷰보기" /></a>
+				<span class="price">$menu.mm_Price 원</span>
+				</li>
+		#set($categoryidx = $menu.mmc_No)
+		
+	#elseif($menu.mmc_No == $categoryidx)
+				<li>
+				<p class="sub_menu">$menu.mm_Name</p>
+				<a href="javascript:;" class="btn_review" onclick="selectmenureview($!{menu.mm_No});"><img src="/resources/images/common/btn_all_menu_review.png" alt="리뷰보기" /></a>
+				<span class="price">$menu.mm_Price 원</span>
+				</li>
+		#end
+		
+	#end
+			</ul>
+		</li>
+	</ul>
+</div>		
+<!-- e : all_menu -->

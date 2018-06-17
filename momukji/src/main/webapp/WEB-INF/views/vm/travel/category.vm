@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ko">
+<head>
+#parse("/WEB-INF/views/vm/includefile/header.vm")
+</head>
+<body>
+	<div class="wrapper">
+		<!-- header -->
+		<header class="header">
+			<h1><a href="javascript:;"><img src="/resources/images/common/img_header_logo.png" alt="모먹지" /></a></h1>
+			<button type="button" class="btn_gnb" title="네비게이션 보기"></button>
+			<button type="button" class="btn_home" title="메인으로 이동" onclick="goPage('/now/main');"></button>
+		</header>
+		<!-- slide nav -->
+		<div class="nav_dim_area"></div>
+		<nav class="slide_nav">
+			<button type="button" id="" name="" class="btn_slide_nav_close"></button>
+			<div class="nav_box">
+				<div class="top">
+					<img src="/resources/images/common/img_header_logo.png" alt="모먹지" />
+				</div>
+				<div class="bottom">
+					<div class="user_info">
+						#if($userSession.mc_Name=="")
+							<a href="javascript:;" class="btn_modify_info">로그인</a>
+							<a href="javascript:;" class="btn_modify_info">회원가입</a>
+						#else
+							<p class="name">$userSession.mc_Name</p>
+							<p class="email">$userSession.mc_Email</p>
+							<a href="javascript:;" class="btn_modify_info">회원정보 수정</a>
+						#end
+					</div>
+					<ul class="gnb">
+						<li><a href="javascript:;">내정보</a></li>
+						<li><a href="javascript:;">즐겨찾기</a></li>
+					</ul>
+				</div>			
+				<button type="button" class="btn_kakao">
+					<img src="../images/common/ico_gnb_kakao.png" alt="" />
+					실시간 상담하기
+				</button>
+			</div>
+		</nav>
+		<!-- container -->
+		<div class="common_container default">
+			<nav class="category_tab">
+				<ul>
+					<li class="curr"><a href="javascript:;">모먹지여행</a></li>
+					<li><a href="javascript:;" onclick="goPage('/now/main');">모먹지나우</a></li>
+					<li><a href="javascript:;" onclick="alert('이벤트 준비중입니다.');">이벤트</a></li>
+				</ul>
+			</nav>
+			<div class="travel_list">
+				<ul class="seoul">
+					<li>
+						<a href="javascript:;" onclick="goPage('/travel/main?mlc1_no=2');">
+							<div class="picture">
+								<img src="/resources/images/common/img_area_gangnam.jpg" alt="" />
+							</div>
+							<h2 class="area_name">강남 <span class="cnt">($countMap.get("2"))</span></h2>
+						</a>
+					</li>
+					<li>
+						<a href="javascript:;" onclick="goPage('/travel/main?mlc1_no=3');">
+							<div class="picture">
+								<img src="/resources/images/common/img_area_gangdong.jpg" alt="" />
+							</div>
+							<h2 class="area_name">강동 <span class="cnt">($countMap.get("3"))</span></h2>
+						</a>
+					</li>
+					<li>
+						<a href="javascript:;" onclick="goPage('/travel/main?mlc1_no=1');">
+							<div class="picture">
+								<img src="/resources/images/common/img_area_gangbuk.jpg" alt="" />
+							</div>
+							<h2 class="area_name">강북 <span class="cnt">($countMap.get("1"))</span></h2>
+						</a>
+					</li>
+					<li>
+						<a href="javascript:;" onclick="goPage('/travel/main?mlc1_no=4');">
+							<div class="picture">
+								<img src="/resources/images/common/img_area_gangseo.jpg" alt="" />
+							</div>
+							<h2 class="area_name">강서 <span class="cnt">($countMap.get("4"))</span></h2>
+						</a>
+					</li>
+				</ul>
+				<div class="other">
+					#set($changeflag = 0)
+					#foreach($local in $localcategoryList)
+						#if($local.mlc1_No > 4 && $local.mlc1_No!= $changeflag)
+							#if($changeflag+1 == $local.mlc1_No)
+							</ul>
+							#end
+							#set($changeflag = $local.mlc1_No)
+							<h2 class="area_name">$local.mlc1_Name<span class="cnt">($countMap.get("$local.mlc1_No"))</span></h2>
+							<ul>
+								<li><a href="javascript:;" onclick="goPage('/travel/main?mlc2_no=$!{$local.mlc2_No}');">$local.mlc2_Name</a></li>
+						#elseif($local.mlc1_No > 4 && $local.mlc1_No== $changeflag)
+								<li><a href="javascript:;" onclick="goPage('/travel/main?mlc2_no=$!{$local.mlc2_No}');">$local.mlc2_Name</a></li>
+						#end
+					#end		
+					<!--		
+					<h2 class="area_name">경기 <span class="cnt">(3,212)</span></h2>
+					<ul>
+						<li><a href="javascript:;">가평</a></li>
+						<li><a href="javascript:;">구리</a></li>
+						<li><a href="javascript:;">남양주</a></li>
+						<li><a href="javascript:;">의정부</a></li>
+						<li><a href="javascript:;">일산</a></li>
+						<li><a href="javascript:;">파주</a></li>
+						<li><a href="javascript:;">포천</a></li>
+						<li><a href="javascript:;">동두천</a></li>
+						<li><a href="javascript:;">과천</a></li>
+						<li><a href="javascript:;">광영</a></li>
+						<li><a href="javascript:;">광주</a></li>
+						<li><a href="javascript:;">김포</a></li>
+						<li><a href="javascript:;">동탄</a></li>
+						<li><a href="javascript:;">오산</a></li>
+						<li><a href="javascript:;">부천</a></li>
+						<li><a href="javascript:;">분당</a></li>
+						<li><a href="javascript:;">성남</a></li>
+						<li><a href="javascript:;">판교</a></li>
+						<li><a href="javascript:;">수원</a></li>
+						<li><a href="javascript:;">안산</a></li>
+						<li><a href="javascript:;">안성</a></li>
+						<li><a href="javascript:;">여주</a></li>
+						<li><a href="javascript:;">이천</a></li>
+						<li><a href="javascript:;">하남</a></li>
+						<li><a href="javascript:;">화성</a></li>
+					</ul>
+					-->
+				</div>
+			</div>
+		</div>
+		<!-- footer -->
+		#parse("/WEB-INF/views/vm/includefile/footer.vm")	
+	</div>
+#parse("/WEB-INF/views/vm/includefile/scriptlink.vm")
+<script>
+//herder 필터
+$('.header .btn_show_filter').on('click', function(){
+	$('.header .header_filter').addClass('show');
+});
+$('.header .header_filter .btn_hide_filter').on('click', function(){
+	$(this).closest('.header_filter').removeClass('show');
+});
+</script>
+</body>
+</html>

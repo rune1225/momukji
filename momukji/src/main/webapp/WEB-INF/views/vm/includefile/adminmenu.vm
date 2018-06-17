@@ -1,0 +1,6 @@
+<ul>
+	<li><a href="javascript:;" onclick="goPage('/admin/restaurantlist')">업장관리</a></li>
+	<li><a href="javascript:;" onclick="goPage('/admin/menulist')">메뉴관리</a></li>
+	<li><a href="javascript:;" onclick="alert('준비중입니다')">이벤트관리</a></li>
+	<li><a href="javascript:;" onclick="alert('준비중입니다')">회원관리</a></li>
+</ul> 

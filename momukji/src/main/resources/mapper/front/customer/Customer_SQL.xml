@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="front.customer">
+
+	<resultMap type="com.momukji.mfront.domain.CustomerVO" id="selectCustomer-result">
+		<result column="MC_NO" 					property="mc_No"/>
+		<result column="MC_EMAIL" 				property="mc_Email"/>
+		<result column="MC_PASSWORD" 			property="mc_Password"/>
+		<result column="MC_NAME" 				property="mc_Name"/>
+		<result column="MC_BIRTH" 				property="mc_Birth"/>
+		<result column="MC_SEX" 				property="mc_Sex"/>
+		<result column="MC_PHONE" 				property="mc_Phone"/>
+		<result column="MC_MAILINGYN" 			property="mc_MailingYn"/>
+		<result column="MC_LOGINAPITYPE" 		property="mc_LoginAPIType"/>
+		<result column="MC_STATUS" 				property="mc_Status"/>
+		<result column="MC_Insert" 				property="mc_Insert"/>
+		<result column="MC_Update"	 			property="mc_Update"/>
+	</resultMap>
+     
+    <insert id="insertCustomer" parameterType="com.momukji.mfront.domain.CustomerVO">
+	<![CDATA[
+		INSERT INTO `momukji`.`MCUSTOMER` 
+					(`MC_EMAIL`,
+					`MC_PASSWORD`, 
+					`MC_NAME`, 
+					`MC_BIRTH`,
+					`MC_PHONE`, 
+					`MC_MAILINGYN`, 
+					`MC_LOGINAPITYPE`, 
+					`MC_STATUS`)
+			VALUES  (#{mc_Email, jdbcType=NUMERIC},
+			         #{mc_Password, jdbcType=VARCHAR},
+			         #{mc_Name, jdbcType=NUMERIC},
+			         #{mc_Birth, jdbcType=VARCHAR},
+			         #{mc_Phone, jdbcType=VARCHAR},
+			         #{mc_MailingYn, jdbcType=VARCHAR},
+			         #{mc_LoginAPIType, jdbcType=VARCHAR},
+			         #{mc_Status, jdbcType=VARCHAR})
+	]]>
+	</insert>
+    
+    <update id="updateCustomer" parameterType="com.momukji.mfront.domain.CustomerVO">
+	<![CDATA[
+		UPDATE `momukji`.`MCUSTOMER` 
+			SET `MC_PASSWORD`= #{mc_Password, jdbcType=VARCHAR}, 
+				`MC_NAME`=#{mc_Name, jdbcType=NUMERIC}, 
+				`MC_BIRTH`= #{mc_Birth, jdbcType=VARCHAR}, 
+				`MC_PHONE`= #{mc_Phone, jdbcType=VARCHAR}, 
+				`MC_MAILINGYN`= #{mc_MailingYn, jdbcType=VARCHAR}, 
+				`MC_LOGINAPITYPE`= #{mc_LoginAPIType, jdbcType=VARCHAR}, 
+				`MC_STATUS`= #{mc_Status, jdbcType=VARCHAR} 
+			WHERE `MC_NO`= #{mc_No, jdbcType=VARCHAR} 
+	]]>
+	</update>
+    
+    <select id="duplicationEmailCheck" parameterType="String" resultType="Integer">
+        <![CDATA[
+        	SELECT 
+        		ifnull ( count(*), 0 ) 
+       		FROM momukji.MCUSTOMER MC 
+       		WHERE MC.MC_EMAIL = #{mc_Email, jdbcType=VARCHAR}
+		]]>
+    </select>
+    
+    <select id="selectCustomer" parameterType="String" resultMap="selectCustomer-result">
+        <![CDATA[
+        	SELECT
+        		MC_NO,
+        		MC_EMAIL,
+				MC_PASSWORD, 
+				MC_NAME, 
+				MC_BIRTH, 
+				MC_SEX, 
+				MC_PHONE, 
+				MC_MAILINGYN, 
+				MC_LOGINAPITYPE, 
+				MC_STATUS
+       		FROM momukji.MCUSTOMER MC 
+       		WHERE MC.MC_EMAIL = #{mc_Email, jdbcType=VARCHAR}
+		]]>
+    </select>
+    
+</mapper>

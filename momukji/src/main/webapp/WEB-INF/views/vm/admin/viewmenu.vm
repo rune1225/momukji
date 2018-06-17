@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ko">
+<head>
+#parse("/WEB-INF/views/vm/includefile/adminheader.vm")
+</head>
+<body>
+	<div id="wrapper" style="background:none;">
+		<div id="sub_container">
+			<section id="side_menu">
+				<h1><a href="javascript:;"><img src="/resources/images/common/img_header_logo.png" alt="모먹지 관리자 시스템 / m.momukji.com/admin" /></a><h1>
+				#parse("/WEB-INF/views/vm/includefile/adminmenu.vm")
+				<footer>
+					<address>copyright(c) 2016.<br>MHONE Rights Reserved.<!--<img src="/resources/images/common/txt_footer_copyright.png" alt="copyright(c) 2015. All Rights Reserved." />--></address>
+				</footer>
+			</section>
+			<section id="content">
+				<div class="content_header">
+					<div>
+						<!--<h2><img src="../images/voc/client_logo.gif" alt="모먹지" /></h2>-->
+						<strong>모먹지 관리자 웹 프로젝트</strong>
+						<div class="login_info">
+							<p><span>클라이언트님</span> 로그인 하셨습니다.</p>
+							<a href="javascript:;"><img src="/resources/images/admin/btn_logout.gif" alt="로그아웃" /></a>
+						</div>
+					</div>
+				</div>
+				<div class="content_body">
+					<h3>메뉴 관리 > 메뉴 리스트 > 메뉴 정보 수정</h3>
+					<form id="menuform" action='/admin/updatemenu' enctype = "multipart/form-data" method="post">
+						<table class="common_tbl write">
+							<colgroup>
+								<col style="width:140px;" />
+								<col style="width:*%;" />
+							</colgroup>
+							<tbody>
+								<tr>
+									<th>메뉴고유번호</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mm_No" name="mm_No" value="$!{menu.mm_No}" readonly/>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>메뉴명</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mm_Name" name="mm_Name" placeholder="메뉴명을 입력해주세요." value="$!{menu.mm_Name}"/>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>가격</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mm_Price" name="mm_Price" placeholder="가격을 입력해주세요." value="$!{menu.mm_Price}" />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>메뉴타입</th>
+									<td>
+										<select name="mm_Type">
+										    <option value="0" #if($!{menu.mm_Type}=='0')selected="selected"#end>일반메뉴</option>
+										    <option value="1" #if($!{menu.mm_Type}=='1')selected="selected"#end>고객추천1위</option>
+										    <option value="2" #if($!{menu.mm_Type}=='2')selected="selected"#end>이달의판매1등</option>
+										    <option value="3" #if($!{menu.mm_Type}=='3')selected="selected"#end>사장님추천</option>
+										</select>	
+									</td>
+								</tr>
+								<tr>
+									<th>메뉴카테고리</th>
+									<td>
+										<select name="mmc_No" id="mmc_No">
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>메뉴소개</th>
+									<td>
+										<div class="textarea_box">
+											<textarea id="mm_Contents" name="mm_Contents" placeholder="내용을 입력해주세요." >$!{menu.mm_Contents}</textarea>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>메뉴이미지</th>
+									<td>
+										<div class="file_area">
+											<input type="file" id="mmi_Img" name="mmi_Img" placeholder="파일을 첨부해주세요." value="$!{menu.mmi_MenuImg_Name}"  />
+											<!-- 멀티파일업로드
+											<p>
+												<a href="javascript:;" class="btn_file_add">추가</a>
+											</p>
+											-->
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						
+						</table>
+						<div class="tbl_button_area center">
+							<a href="javascript:;" class="btn_common_red" onclick="submitForm();"><span>수정</span></a>
+							<a href="javascript:;" class="btn_common_gray" onclick="navback();"><span>목록</span></a>
+						</div>
+					</form>
+				</div>
+			</section>
+		</div>
+	</div>
+#parse("/WEB-INF/views/vm/includefile/adminscriptlink.vm")
+<script>
+
+$(document).ready(function(){
+
+	//사이드메뉴 addclass
+	$("#side_menu ul li:eq(" + 1 + ")").addClass('on');
+
+	//콘텐츠 영역과 윈도우사이즈 비교하여 side_menu높이값 부여
+	var contentHeight = $('.content_body').outerHeight(true) + 105;
+	var winHeight = $(window).height();
+	if(contentHeight < winHeight){
+		$('#side_menu').css({'height':winHeight});
+	}else{
+		$('#side_menu').css({'height':contentHeight});
+	}
+	
+	var fileUploadArea;
+	var fileUploadArea = fileUploadArea + '<tr>';
+	var fileUploadArea = fileUploadArea + '<th>첨부파일</th>';
+	var fileUploadArea = fileUploadArea + '<td>';
+	var fileUploadArea = fileUploadArea + '<div class="file_area">';
+	var fileUploadArea = fileUploadArea + '<input type="file" id="" name="" placeholder="파일을 첨부해주세요." />';
+	var fileUploadArea = fileUploadArea + '<p>';
+	var fileUploadArea = fileUploadArea + '<a href="javascript:;" class="btn_file_delete">삭제</a>';
+	var fileUploadArea = fileUploadArea + '</p>';
+	var fileUploadArea = fileUploadArea + '</div>';
+	var fileUploadArea = fileUploadArea + '</td>';
+	var fileUploadArea = fileUploadArea + '</tr>';
+	
+	$(document).on('click', '.btn_file_add', function(){
+		$(this).parent().parent().parent().parent().parent().append(fileUploadArea);
+	});
+	$(document).on('click', '.btn_file_delete', function(){
+		$(this).parent().parent().parent().parent().remove();
+	});
+	
+   //메뉴카테고리구현
+   loadMmcCombo();
+
+});
+
+function submitForm(){
+	//동적 form 생성
+	var mr_no = $('<input type="hidden" value="$!{menu.mr_No}" name="mr_No" id="mr_No">');
+	
+	$('#menuform').append(mr_no);
+	
+	if(menuFormValidation()){
+		$('#menuform').submit();
+	}else{
+		return false;
+	}
+}
+
+function loadMmcCombo(){
+	jQuery.ajax({
+        url: '/menu/menucategorylist',
+        type: 'GET',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8', 
+        dataType: 'json',
+	 beforeSend:function() {
+	 }, 
+        success:function(args){
+	 		$.each(args, function(key,state) {
+	 			
+	 			if(key=='$!{menu.mmc_No}'){
+		        	$("#mmc_No").append('<option value="' + key + '" selected=selected>' + state + '</option>');
+		        }else{
+		        	$("#mmc_No").append('<option value="' + key + '">' + state + '</option>');
+		        }
+	 			
+		    });
+		    
+	  }
+    });
+}
+
+</script>
+
+</body>
+</html>

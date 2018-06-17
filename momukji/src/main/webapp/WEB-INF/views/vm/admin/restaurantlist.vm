@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ko">
+<head>
+#parse("/WEB-INF/views/vm/includefile/adminheader.vm")
+</head>
+<body>
+	<div id="wrapper" style="background:none;">
+		<div id="sub_container">
+			<section id="side_menu">
+				<h1><a href="javascript:;"><img src="/resources/images/common/img_header_logo.png" alt="모먹지 관리자 시스템 / m.momukji.com/admin" /></a><h1>
+				#parse("/WEB-INF/views/vm/includefile/adminmenu.vm")
+				<footer>
+					<address>copyright(c) 2016.<br>MHONE Rights Reserved.<!--<img src="/resources/images/common/txt_footer_copyright.png" alt="copyright(c) 2015. All Rights Reserved." />--></address>
+				</footer>
+			</section>
+			<section id="content">
+				<div class="content_header">
+					<div>
+						<!--<h2><img src="../images/voc/client_logo.gif" alt="모먹지" /></h2>-->
+						<strong>모먹지 관리자 웹 프로젝트</strong>
+						<div class="login_info">
+							<p><span>클라이언트님</span> 로그인 하셨습니다.</p>
+							<a href="javascript:;"><img src="/resources/images/admin/btn_logout.gif" alt="로그아웃" /></a>
+						</div>
+					</div>
+				</div>
+				<div class="content_body">
+					<h3>업장 관리 > 업장 리스트</h3>
+					<div class="list_header">
+						<span>Total:$!{totalCount}#if($!{totalCount}=='')0#end</span>
+						<a href="javascript:;" class="btn_common_gray_small" onclick="goPage('/admin/restaurantform')"><span>등록하기</span></a>
+					</div>
+					<div class="search_area">
+						<select id="searchoption" name="searchoption">
+						    <option value="mr_name" #if($!{searchOption}=='mr_name') selected="selected"#end>업체명</option>
+						    <option value="mr_no" #if($!{searchOption}=='mr_no') selected="selected"#end>업체번호</option>
+						    <option value="mr_id" #if($!{searchOption}=='mr_id') selected="selected"#end>업체아이디</option>
+						    <option value="mr_phone" #if($!{searchOption}=='mr_phone') selected="selected"#end>업체전화</option>
+						</select>
+						<div class="search_form">
+							<input type="text" id="searchword" name="searchword" placeholder="검색어를 입력하세요." value="$!{searchWord}"/>
+							<a href="javascript:;" class="btn_search" onclick="searchrestaurant();"><img src="/resources/images/admin/btn_list_search.gif" alt="" /></a>
+						</div>
+					</div>
+					<table class="common_tbl">
+						<colgroup>
+							<col style="width:10%;" />
+							<col style="width:*%;" />
+							<col style="width:20%;" />
+							<col style="width:15%;" />
+							<col style="width:20%;" />
+							<col style="width:10%;" />
+						</colgroup>
+						<thead>
+							<tr>
+								<th>업체번호</th>
+								<th>업체명</th>
+								<th>아이디</th>
+								<th>가입날짜</th>
+								<th>전화번호</th>
+								<th>메뉴관리</th>
+							</tr>
+						</thead>
+						<tbody>
+							#foreach($res in $restaurantList)
+							<tr>
+								<td>$res.mr_No</td>
+								<td><!--<td class="subject">--><a href="javascript:;" onclick="goPage('/admin/viewrestaurant?mr_no=$!{res.mr_No}')">$res.mr_Name</a></td>
+								<td>$res.mr_Id</td>
+								<td>$res.mr_Insert</td>
+								<td>$res.mr_Phone</td>
+								<td><a href="javascript:;" class="btn_common_gray_small" onclick="goPage('/admin/menulist?searchoption=mr_no&searchword=$!{res.mr_No}')"><span>GO</span></a></td>
+							</tr>
+							#end
+						</tbody>
+					</table>
+					<!--
+					<div class="list_bottom">
+						<div class="page_nate">
+							<a href="javascript:;" class="btn_prev"><img src="/resources/images/admin/ico_pagenate_prev.gif" alt="" /></a>
+							<a href="javascript:;" class="num curr">1</a>
+							<a href="javascript:;" class="num">2</a>
+							<a href="javascript:;" class="num">3</a>
+							<a href="javascript:;" class="num">4</a>
+							<a href="javascript:;" class="num">5</a>
+							<a href="javascript:;" class="num">6</a>
+							<a href="javascript:;" class="btn_next"><img src="/resources/images/admin/ico_pagenate_next.gif" alt="" /></a>
+						</div>
+						<a href="javascript:;" class="btn_common_gray_small" onclick="goPage('/admin/restaurantform')"><span>등록하기</span></a>
+					</div>
+					-->
+				</div>
+			</section>
+		</div>
+	</div>
+#parse("/WEB-INF/views/vm/includefile/adminscriptlink.vm")
+<script>
+$(document).ready(function(){
+
+	//사이드메뉴 addclass
+	$("#side_menu ul li:eq(" + 0 + ")").addClass('on');
+
+	//콘텐츠 영역과 윈도우사이즈 비교하여 side_menu높이값 부여
+	var contentHeight = $('.content_body').outerHeight(true) + 105;
+	var winHeight = $(window).height();
+	if(contentHeight < winHeight){
+		$('#side_menu').css({'height':winHeight});
+	}else{
+		$('#side_menu').css({'height':contentHeight});
+	}
+	
+	$("#searchword").keydown(function (key) {
+ 
+        if(key.keyCode == 13){//키가 13이면 실행 (엔터는 13)
+            searchrestaurant();
+        }
+ 
+    });
+    
+});
+
+function searchrestaurant(){
+
+	if($("#searchword").val()!=""){
+	
+			console.log($("#searchword").val().length);
+		if($("#searchword").val().length>0){
+			if($("#searchoption option:selected").val()=='mr_name')
+				if($("#searchword").val().length<2){
+					alert('업체명은 두자 이상.');
+					return;
+				}
+				
+			goPage('restaurantlist?searchoption='+$("#searchoption option:selected").val()+"&searchword="+$("#searchword").val()+"&page=0");
+			
+		}else{
+			alert('검색어는 최소 한자 이상.');
+		}
+	
+	}else{
+	
+		alert('검색어를 입력하세요');
+		
+	}
+	
+}
+	
+</script>
+</body>
+</html>

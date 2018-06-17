@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="front.menu">
+
+	<resultMap type="com.momukji.mfront.domain.MenuVO" id="selectTypicalMenu-result">
+		<result column="MM_NO" 					property="mm_No"/>
+		<result column="MM_NAME" 				property="mm_Name"/>
+		<result column="MM_PRICE" 				property="mm_Price"/>
+		<result column="MM_TYPE" 				property="mm_Type"/>
+		<result column="MM_CONTENTS" 			property="mm_Contents"/>
+		<result column="MM_INSERT" 				property="mm_Insert"/>
+		<result column="MM_UPDATE" 				property="mm_Update"/>
+		<result column="MMC_NO" 				property="mmc_No"/>
+		<result column="MMC_NAME" 				property="mmc_Name"/>
+		<result column="MR_NO" 					property="mr_No"/>
+		<result column="MM_SCORE_SUM" 			property="mm_Score_Sum"/>
+		<result column="MMI_IMG_URL" 			property="mmi_Img_Url"/>
+		<result column="MMI_MENUIMG_NAME" 		property="mmi_MenuImg_Name"/>
+		<result column="MMI_MENUIMG_ORGNAME" 	property="mmi_MenuImg_OrgName"/>
+		<result column="MMI_MENUIMG_THUMB" 		property="mmi_MenuImg_Thumb"/>
+	</resultMap>
+     
+    <select id="selectMenu" parameterType="hashMap" resultType="com.momukji.mfront.domain.MenuVO">
+        <![CDATA[
+        	SELECT /* MomukjiMenu_SQL.xml : front.menu.selectMenu by mobile */
+				MM.MM_NO,
+                MM.MM_NAME,
+                MM.MM_PRICE,
+                MM.MM_TYPE,
+                MM.MM_CONTENTS,
+                MM.MMC_NO,
+                MM.MR_NO,
+                MMI.MMI_IMG_URL,
+                MMI.MMI_MENUIMG_NAME,
+                MMI.MMI_MENUIMG_ORGNAME,
+                MMI.MMI_MENUIMG_THUMB
+			FROM momukji.MMENU MM 
+				LEFT JOIN momukji.MMENUIMG MMI ON MM.MM_NO = MMI.MM_NO
+			WHERE MM.MM_NO = #{mm_No, jdbcType=VARCHAR}
+		]]>
+    </select>
+    
+    <select id="selectMomukjiEntireMenu" parameterType="hashMap" resultMap="selectTypicalMenu-result">
+        <![CDATA[
+        	SELECT /* MomukjiMenu_SQL.xml : front.menu.selectMomukjiEntireMenu by mobile */
+				DISTINCT MM.MM_NO,
+                MM.MM_NAME,
+                MM.MM_PRICE,
+                MM.MM_TYPE,
+                MM.MMC_NO,
+                MM.MM_CONTENTS,
+                MM.MR_NO,
+                MM.MM_INSERT,
+                MM.MM_UPDATE,
+                MMC.MMC_NAME,
+                IFNULL((SELECT SUM(MMR.MMR_SCORE)
+				FROM momukji.MMENUREVIEW MMR
+				WHERE MMR.MM_NO = MM.MM_NO),0) AS MM_SCORE_SUM,
+                MMI.MMI_IMG_URL,
+                MMI.MMI_MENUIMG_NAME,
+                MMI.MMI_MENUIMG_ORGNAME,
+                MMI.MMI_MENUIMG_THUMB
+			FROM momukji.MMENU MM 
+				LEFT JOIN momukji.MMENUREVIEW MMR ON MM.MM_NO = MMR.MM_NO
+				LEFT JOIN momukji.MMENUIMG MMI ON MM.MM_NO = MMI.MM_NO
+                LEFT JOIN momukji.MMENUCATEGORY MMC ON MM.MMC_NO = MMC.MMC_NO
+			WHERE MM.MR_NO = #{mr_no, jdbcType=VARCHAR}
+			ORDER BY MMC_NO
+		]]>
+    </select>
+    
+    <select id="selectMomukjiTypicalMenu" parameterType="hashMap" resultMap="selectTypicalMenu-result">
+        <![CDATA[
+        	SELECT /* MomukjiMenu_SQL.xml : front.menu.selectMomukjiTypicalMenu by mobile */
+				DISTINCT MM.MM_NO,
+                MM.MM_NAME,
+                MM.MM_PRICE,
+                MM.MM_TYPE,
+                MM.MM_CONTENTS,
+                MM.MR_NO,
+                IFNULL((SELECT AVG(MMR.MMR_SCORE)
+				FROM momukji.MMENUREVIEW MMR
+				WHERE MMR.MM_NO = MM.MM_NO),0) AS MM_SCORE_SUM,
+                MMI.MMI_IMG_URL,
+                MMI.MMI_MENUIMG_NAME,
+                MMI.MMI_MENUIMG_ORGNAME,
+                MMI.MMI_MENUIMG_THUMB
+			FROM momukji.MMENU MM 
+				LEFT JOIN momukji.MMENUREVIEW MMR ON MM.MM_NO = MMR.MM_NO
+				LEFT JOIN momukji.MMENUIMG MMI ON MM.MM_NO = MMI.MM_NO
+			WHERE MM.MR_NO = #{mr_no, jdbcType=VARCHAR}
+				AND MM_TYPE > 0
+			ORDER BY MM_TYPE
+		]]>
+    </select>
+    
+    <resultMap type="com.momukji.mfront.domain.MenuReviewVO" id="selectMenuReview-result">
+		<result column="MMR_NO" 				property="mmr_No"/>
+		<result column="MMR_SCORE" 				property="mmr_Score"/>
+		<result column="MMR_CONTENTS" 			property="mmr_Contents"/>
+		<result column="MM_NO" 					property="mm_No"/>
+		<result column="MM_NAME" 				property="mm_Name"/>
+		<result column="MC_NO" 					property="mc_No"/>
+		<result column="MC_NAME" 				property="mc_Name"/>
+		<result column="MMR_INSERT" 			property="mmr_Insert"/>
+		<result column="MMR_UPDATE" 			property="mmr_Update"/>
+		<result column="MMI_IMG_URL" 			property="mmi_Img_Url"/>
+		<result column="MMI_MENUIMG_NAME" 		property="mmi_MenuImg_Name"/>
+		<result column="MMI_MENUIMG_THUMB" 		property="mmi_MenuImg_Thumb"/>
+	</resultMap>
+     
+    <select id="selectMomukjiMenuReview" parameterType="hashMap" resultMap="selectMenuReview-result">
+        <![CDATA[
+        	SELECT 	/* MomukjiMenu_SQL.xml : front.menu.selectMomukjiMenuReview by mobile */
+        			MMR.MMR_NO,
+					MMR.MMR_SCORE,
+					MMR.MMR_CONTENTS,
+			        MMR.MMR_INSERT,
+			        MMR.MMR_UPDATE,
+			        MMR.MC_NO,
+			        MC.MC_NAME,
+			        MMR.MM_NO,
+			        MM.MM_NAME,
+                	MMI.MMI_IMG_URL,
+                	MMI.MMI_MENUIMG_NAME,
+                	MMI.MMI_MENUIMG_ORGNAME,
+               		MMI.MMI_MENUIMG_THUMB
+				FROM momukji.MMENUREVIEW MMR
+					LEFT JOIN momukji.MMENU MM ON MMR.MM_NO = MM.MM_NO
+			        LEFT JOIN momukji.MCUSTOMER MC ON MMR.MC_NO = MC.MC_NO
+			        LEFT JOIN momukji.MMENUIMG MMI ON MMR.MM_NO = MMI.MM_NO
+		]]>
+		<if test=' mm_no == null or mm_no == "" '>
+		  WHERE MM.MR_NO = #{mr_no, jdbcType=VARCHAR}
+		</if>
+		<if test=' mr_no == null or mr_no == "" '>
+		  WHERE MMR.MM_NO = #{mm_no, jdbcType=VARCHAR}
+		</if>
+		<![CDATA[
+			    ORDER BY MMR_INSERT DESC
+			    LIMIT #{limit, jdbcType=VARCHAR} OFFSET #{page, jdbcType=VARCHAR}
+		]]>
+    </select>
+    
+    <insert id="insertMenuReview" parameterType="com.momukji.mfront.domain.MenuReviewVO">
+	<![CDATA[
+		INSERT INTO /* display.xml : front.momukjimenu.insertMenuReview by mobile */
+				momukji.MMENUREVIEW
+				(MMR_SCORE, 
+				MMR_CONTENTS, 
+				MM_NO, 
+				MC_NO)
+		VALUES	(#{mmr_Score, jdbcType=VARCHAR},
+				#{mmr_Contents, jdbcType=VARCHAR},
+				#{mm_No, jdbcType=VARCHAR},
+				#{mc_No, jdbcType=VARCHAR})  
+	]]>
+	</insert>
+	
+	<insert id="insertMenu" parameterType="com.momukji.mfront.domain.MenuVO">
+		INSERT INTO /* display.xml : front.menu.insertMenu by mobile */
+				momukji.MMENU
+				(MM_NAME,
+				MM_PRICE,
+				MM_TYPE,
+				MM_CONTENTS,
+				MMC_NO,
+				MR_NO)
+		VALUES (#{mm_Name, jdbcType=VARCHAR},
+				#{mm_Price, jdbcType=VARCHAR},
+				#{mm_Type, jdbcType=VARCHAR},
+				#{mm_Contents, jdbcType=VARCHAR},
+				#{mmc_No, jdbcType=VARCHAR},
+				#{mr_No, jdbcType=VARCHAR})
+		<selectKey keyProperty="mm_No" resultType="Integer" order="AFTER">
+		    SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<update id="modifyMenu" parameterType="hashMap">
+	<![CDATA[
+		UPDATE momukji.MMENU /* Menu_SQL.xml : front.menu.modifyMenu by mobile */
+		SET 
+			MM_NAME=#{mm_Name, jdbcType=VARCHAR},
+			MM_PRICE=#{mm_Price, jdbcType=VARCHAR},
+			MM_TYPE=#{mm_Type, jdbcType=VARCHAR},
+			MM_CONTENTS=#{mm_Contents, jdbcType=VARCHAR},
+			MMC_NO=#{mmc_No, jdbcType=VARCHAR}
+		WHERE MM_NO=#{mm_No, jdbcType=VARCHAR}
+	]]>
+	</update>
+	
+	<insert id="insertMenuImg" parameterType="hashMap">
+	<![CDATA[
+		INSERT INTO momukji.MMENUIMG /* Restaurant_SQL.xml : front.menu.insertMenuImg by mobile */
+		 			(MMI_IMG_URL,
+		 			MMI_MENUIMG_NAME,
+		 			MMI_MENUIMG_ORGNAME,
+		 			MM_NO) 
+		 	VALUES (#{mmi_Img_Url, jdbcType=VARCHAR},
+		 			#{mmi_MenuImg_Name, jdbcType=VARCHAR},
+		 			#{mmi_MenuImg_OrgName, jdbcType=VARCHAR},
+  	 			 	#{mm_No, jdbcType=VARCHAR})
+	]]>
+	</insert>
+	
+	<update id="modifyMenuImg" parameterType="hashMap">
+	<![CDATA[
+		UPDATE momukji.MMENUIMG /* Menu_SQL.xml : front.menu.insertMenuImg by mobile */
+		SET 
+			MMI_IMG_URL=#{mmi_Img_Url, jdbcType=VARCHAR},
+			MMI_MENUIMG_NAME=#{mmi_MenuImg_Name, jdbcType=VARCHAR},
+			MMI_MENUIMG_ORGNAME=#{mmi_MenuImg_OrgName, jdbcType=VARCHAR}
+		WHERE MM_NO=#{mm_No, jdbcType=VARCHAR}
+	]]>
+	</update>
+	
+    <select id="selectMenuCategory" resultType="hashmap">
+        <![CDATA[
+        	SELECT /* Menu_SQL.xml : front.menu.selectMenuCategory by mobile */
+                MMC_NO,
+                MMC_NAME
+			FROM momukji.MMENUCATEGORY
+			ORDER BY MMC_NO
+		]]>
+    </select>
+</mapper>

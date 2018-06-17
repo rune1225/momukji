@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="ko">
+<head>
+#parse("/WEB-INF/views/vm/includefile/adminheader.vm")
+</head>
+<body>
+	<div id="wrapper" style="background:none;">
+		<div id="sub_container">
+			<section id="side_menu">
+				<h1><a href="javascript:;"><img src="/resources/images/common/img_header_logo.png" alt="모먹지 관리자 시스템 / m.momukji.com/admin" /></a><h1>
+				#parse("/WEB-INF/views/vm/includefile/adminmenu.vm")
+				<footer>
+					<address>copyright(c) 2016.<br>MHONE Rights Reserved.<!--<img src="/resources/images/common/txt_footer_copyright.png" alt="copyright(c) 2015. All Rights Reserved." />--></address>
+				</footer>
+			</section>
+			<section id="content">
+				<div class="content_header">
+					<div>
+						<!--<h2><img src="../images/voc/client_logo.gif" alt="모먹지" /></h2>-->
+						<strong>모먹지 관리자 웹 프로젝트</strong>
+						<div class="login_info">
+							<p><span>클라이언트님</span> 로그인 하셨습니다.</p>
+							<a href="javascript:;"><img src="/resources/images/admin/btn_logout.gif" alt="로그아웃" /></a>
+						</div>
+					</div>
+				</div>
+				<div class="content_body">
+					<h3>업장 관리 > 업장 리스트 > 업장 정보</h3>
+					<form id="restaurantform" action='/admin/updaterestaurant' enctype = "multipart/form-data" method="post">
+						<table class="common_tbl write">
+							<colgroup>
+								<col style="width:140px;" />
+								<col style="width:*%;" />
+							</colgroup>
+							<tbody>
+								<tr>
+									<th>업장고유번호</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_No" name="mr_No" value="$!{res.mr_No}" readonly/>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>아이디(이메일)</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_Id" name="mr_Id" value="$!{res.mr_Id}" />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>업장명</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_Name" name="mr_Name" value="$!{res.mr_Name}"/>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>음식카테고리</th>
+									<td>
+										<select name="mfc_No" id="mfc_No">
+										    <option value="">===음식선택===</option>
+										    <!--<option value="1">추천</option>-->
+										    <option value="2"#if($!{res.mfc_No} == '2') selected="selected" #end>한식</option>
+										    <option value="3"#if($!{res.mfc_No} == '3') selected="selected" #end>중식</option>
+										    <option value="4"#if($!{res.mfc_No} == '4') selected="selected" #end>일식</option>
+										    <option value="5"#if($!{res.mfc_No} == '5') selected="selected" #end>양식</option>
+										    <option value="6"#if($!{res.mfc_No} == '6') selected="selected" #end>육류</option>
+										    <option value="7"#if($!{res.mfc_No} == '7') selected="selected" #end>어류</option>
+										    <option value="8"#if($!{res.mfc_No} == '8') selected="selected" #end>조류</option>
+										    <option value="9"#if($!{res.mfc_No} == '9') selected="selected" #end>분식</option>
+										    <option value="10"#if($!{res.mfc_No} == '10') selected="selected" #end>찜,탕</option>
+										    <option value="11"#if($!{res.mfc_No} == '11') selected="selected" #end>베이커리</option>
+										    <option value="12"#if($!{res.mfc_No} == '12') selected="selected" #end>패스트푸드</option>
+										    <option value="13"#if($!{res.mfc_No} == '13') selected="selected" #end>죽</option>
+										    <option value="14"#if($!{res.mfc_No} == '14') selected="selected" #end>이색</option>
+										    <option value="15"#if($!{res.mfc_No} == '15') selected="selected" #end>카페</option>
+										    <option value="16"#if($!{res.mfc_No} == '16') selected="selected" #end>주류</option>
+										    <!--<option value="17">기타</option>-->
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>지역카테고리</th>
+									<td>
+										<select name="mlc1_No" id="mlc1_No">
+											 <option value="">===대지역선택===</option>
+										     <option value="1"#if($!{res.mlc1_No} == '1') selected="selected" #end>강북</option>
+										     <option value="2"#if($!{res.mlc1_No} == '2') selected="selected" #end>강남</option>
+										     <option value="3"#if($!{res.mlc1_No} == '3') selected="selected" #end>강동</option>
+										     <option value="4"#if($!{res.mlc1_No} == '4') selected="selected" #end>강서</option>
+										     <option value="5"#if($!{res.mlc1_No} == '5') selected="selected" #end>경기</option>
+										     <option value="6"#if($!{res.mlc1_No} == '6') selected="selected" #end>인천</option>
+										     <option value="7"#if($!{res.mlc1_No} == '7') selected="selected" #end>강원</option>
+										     <option value="8"#if($!{res.mlc1_No} == '8') selected="selected" #end>충청</option>
+										     <option value="9"#if($!{res.mlc1_No} == '9') selected="selected" #end>대전</option>
+										     <option value="10"#if($!{res.mlc1_No} == '10') selected="selected" #end>대구</option>
+										     <option value="11"#if($!{res.mlc1_No} == '11') selected="selected" #end>전라</option>
+										     <option value="12"#if($!{res.mlc1_No} == '12') selected="selected" #end>광주</option>
+										     <option value="13"#if($!{res.mlc1_No} == '13') selected="selected" #end>경상</option>
+										     <option value="14"#if($!{res.mlc1_No} == '14') selected="selected" #end>부산</option>
+										     <option value="15"#if($!{res.mlc1_No} == '15') selected="selected" #end>제주</option>
+										</select>
+										<select name="mlc2_No" id="mlc2_No">
+											 <option value="">===소지역선택===</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>주소</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_Address" name="mr_Address" value="$!{res.mr_Address}" />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>좌표</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_Position_Lat" name="mr_Position_Lat" value="$!{res.mr_Position_Lat}"/> 
+										</div>
+										<div class="input_text_box">
+											<input type="text" id="mr_Position_Lng" name="mr_Position_Lng" value="$!{res.mr_Position_Lng}"/> 
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>전화번호</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_Phone" name="mr_Phone" value="$!{res.mr_Phone}"/>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>배달유무</th>
+									<td>
+										<input type="radio" name="mr_DeliveryYn" value="1" #if($!{res.mr_DeliveryYn}=="1") checked="checked" #end> 예
+										<input type="radio" name="mr_DeliveryYn" value="0" #if($!{res.mr_DeliveryYn}!="1") checked="checked" #end> 아니오
+									</td>
+								</tr>
+								<tr>
+									<th>배달지역</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_DeliveryArea" name="mr_DeliveryArea" value="$!{res.mr_DeliveryArea}" />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>좌석 수</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_Seat" name="mr_Seat" value="$!{res.mr_Seat}" />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>TV 방영 유무</th>
+									<td>
+										<input type="radio" name="mr_TvYn" value="1" #if($!{res.mr_TvYn}=="1") checked="checked" #end> 예
+										<input type="radio" name="mr_TvYn" value="0" #if($!{res.mr_TvYn}!="1") checked="checked" #end> 아니오
+									</td>
+								</tr>
+								<tr>
+									<th>주차 가능 여부</th>
+									<td>
+										<input type="radio" name="mr_ParkingYn" value="1" #if($!{res.mr_ParkingYn}=="1") checked="checked" #end> 예
+										<input type="radio" name="mr_ParkingYn" value="0" #if($!{res.mr_ParkingYn}!="1") checked="checked" #end> 아니오
+									</td>
+								</tr>
+								<tr>
+									<th>영업시간</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_OpenTime" name="mr_OpenTime" value="$!{res.mr_OpenTime}" />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>휴일</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_ClosingDay" name="mr_ClosingDay" value="$!{res.mr_ClosingDay}" />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>파트너즈</th>
+									<td>
+										<input type="radio" name="mr_PartnerYn" value="1" #if($!{res.mr_PartnerYn}=="1") checked="checked" #end> 예
+										<input type="radio" name="mr_PartnerYn" value="0" #if($!{res.mr_PartnerYn}!="1") checked="checked" #end> 아니오
+									</td>
+								</tr>
+								<tr>
+									<th>업장소개</th>
+									<td>
+										<div class="textarea_box">
+											<textarea id="mr_Introduce" name="mr_Introduce">$!{res.mr_Introduce}</textarea>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>업장이미지</th>
+									<td>
+										<div class="file_area">
+											<input type="file" id="mr_img" name="mr_img" value="$!{res.mri_ResImg_Name}" />
+											<!-- 멀티파일업로드
+											<p>
+												<a href="javascript:;" class="btn_file_add">추가</a>
+											</p>
+											-->
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						
+						</table>
+						<div class="tbl_button_area center">
+							<a href="javascript:;" class="btn_common_red" onclick="submitForm();"><span>수정</span></a>
+							<a href="javascript:;" class="btn_common_gray" onclick="navback();"><span>목록</span></a>
+						</div>
+					</form>
+				</div>
+			</section>
+		</div>
+	</div>
+#parse("/WEB-INF/views/vm/includefile/adminscriptlink.vm")
+<script>
+
+$(document).ready(function(){
+
+	//사이드메뉴 addclass
+	$("#side_menu ul li:eq(" + 0 + ")").addClass('on');
+
+	//콘텐츠 영역과 윈도우사이즈 비교하여 side_menu높이값 부여
+	var contentHeight = $('.content_body').outerHeight(true) + 105;
+	var winHeight = $(window).height();
+	if(contentHeight < winHeight){
+		$('#side_menu').css({'height':winHeight});
+	}else{
+		$('#side_menu').css({'height':contentHeight});
+	}
+	
+	var fileUploadArea;
+	var fileUploadArea = fileUploadArea + '<tr>';
+	var fileUploadArea = fileUploadArea + '<th>첨부파일</th>';
+	var fileUploadArea = fileUploadArea + '<td>';
+	var fileUploadArea = fileUploadArea + '<div class="file_area">';
+	var fileUploadArea = fileUploadArea + '<input type="file" id="" name="" placeholder="파일을 첨부해주세요." />';
+	var fileUploadArea = fileUploadArea + '<p>';
+	var fileUploadArea = fileUploadArea + '<a href="javascript:;" class="btn_file_delete">삭제</a>';
+	var fileUploadArea = fileUploadArea + '</p>';
+	var fileUploadArea = fileUploadArea + '</div>';
+	var fileUploadArea = fileUploadArea + '</td>';
+	var fileUploadArea = fileUploadArea + '</tr>';
+	
+	$(document).on('click', '.btn_file_add', function(){
+		$(this).parent().parent().parent().parent().parent().append(fileUploadArea);
+	});
+	$(document).on('click', '.btn_file_delete', function(){
+		$(this).parent().parent().parent().parent().remove();
+	});
+	
+	loadMlc2Combo('$!{res.mlc1_No}');
+	
+	//지역카테고리 이벤트
+	$('#mlc1_No').change(function() {
+	   //기능구현
+	   var selectedVal = $('#mlc1_No option:selected').val();
+	   console.log(selectedVal);
+	   loadMlc2Combo(selectedVal);
+	});
+	
+});
+
+
+function submitForm(){
+
+	if(resFormValidation()){
+		$('#restaurantform').submit();
+	}else{
+		return false;
+	}
+
+}
+
+function loadMlc2Combo($selectedVal){
+	jQuery.ajax({
+        url: '/travel/localcategorylist',
+        type: 'GET',
+        data: {mlc1_no : $selectedVal},
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8', 
+        dataType: 'json',
+	 beforeSend:function() {
+					$("#mlc2_No").html("<option value='' selected='selected'>===소지역선택===</option>")
+	 }, 
+        success:function(args){
+	 		
+	 		$.each(args, function(key,state) {
+	 			if(key=='$!{res.mlc2_No}'){
+		        	$("#mlc2_No").append('<option value="' + key + '" selected=selected>' + state + '</option>');
+		        }else{
+		        	$("#mlc2_No").append('<option value="' + key + '">' + state + '</option>');
+		        }
+		    });
+		    
+	  }
+    });
+}
+
+</script>
+
+</body>
+</html>

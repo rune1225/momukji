@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ko">
+<head>
+#parse("/WEB-INF/views/vm/includefile/adminheader.vm")
+</head>
+<body>
+	<div id="wrapper" style="background:none;">
+		<div id="sub_container">
+			<section id="side_menu">
+				<h1><a href="javascript:;"><img src="/resources/images/common/img_header_logo.png" alt="모먹지 관리자 시스템 / m.momukji.com/admin" /></a><h1>
+				#parse("/WEB-INF/views/vm/includefile/adminmenu.vm")
+				<footer>
+					<address>copyright(c) 2016.<br>MHONE Rights Reserved.<!--<img src="/resources/images/common/txt_footer_copyright.png" alt="copyright(c) 2015. All Rights Reserved." />--></address>
+				</footer>
+			</section>
+			<section id="content">
+				<div class="content_header">
+					<div>
+						<!--<h2><img src="../images/voc/client_logo.gif" alt="모먹지" /></h2>-->
+						<strong>모먹지 관리자 웹 프로젝트</strong>
+						<div class="login_info">
+							<p><span>클라이언트님</span> 로그인 하셨습니다.</p>
+							<a href="javascript:;"><img src="/resources/images/admin/btn_logout.gif" alt="로그아웃" /></a>
+						</div>
+					</div>
+				</div>
+				<div class="content_body">
+					<h3>업장 관리 > 업장 리스트 > 업장 정보 입력</h3>
+					<form id="restaurantform" action='/admin/insertrestaurant' enctype = "multipart/form-data" method="post">
+						<table class="common_tbl write">
+							<colgroup>
+								<col style="width:140px;" />
+								<col style="width:*%;" />
+							</colgroup>
+							<tbody>
+								<tr>
+									<th>이메일</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_Id" name="mr_Id" placeholder="이메일를 입력해주세요." />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>업장명</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_Name" name="mr_Name" placeholder="업장명을 입력해주세요." />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>음식카테고리</th>
+									<td>
+										<select name="mfc_No" id="mfc_No">
+										    <option value="" selected="selected">===음식선택===</option>
+										    <!--<option value="1">추천</option>-->
+										    <option value="2">한식</option>
+										    <option value="3">중식</option>
+										    <option value="4">일식</option>
+										    <option value="5">양식</option>
+										    <option value="6">육류</option>
+										    <option value="7">어류</option>
+										    <option value="8">조류</option>
+										    <option value="9">분식</option>
+										    <option value="10">찜,탕</option>
+										    <option value="11">베이커리</option>
+										    <option value="12">패스트푸드</option>
+										    <option value="13">죽</option>
+										    <option value="14">이색</option>
+										    <option value="15">카페</option>
+										    <option value="16">주류</option>
+										    <!--<option value="17">기타</option>-->
+										</select>	
+									</td>
+								</tr>
+								<tr>
+									<th>지역카테고리</th>
+									<td>
+										<select name="mlc1_No" id="mlc1_No">
+											 <option value="" selected="selected">===대지역선택===</option>
+										     <option value="1">강북</option>
+										     <option value="2">강남</option>
+										     <option value="3">강동</option>
+										     <option value="4">강서</option>
+										     <option value="5">경기</option>
+										     <option value="6">인천</option>
+										     <option value="7">강원</option>
+										     <option value="8">충청</option>
+										     <option value="9">대전</option>
+										     <option value="10">대구</option>
+										     <option value="11">전라</option>
+										     <option value="12">광주</option>
+										     <option value="13">경상</option>
+										     <option value="14">부산</option>
+										     <option value="15">제주</option>
+										</select>
+										<select name="mlc2_No" id="mlc2_No">
+											 <option value="" selected="selected">===소지역선택===</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<th>주소</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_Address" name="mr_Address" placeholder="주소를 입력해주세요." />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>좌표</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_Position_Lat" name="mr_Position_Lat" placeholder="위도를 입력해주세요." /> 
+										</div>
+										<div class="input_text_box">
+											<input type="text" id="mr_Position_Lng" name="mr_Position_Lng" placeholder="경도를 입력해주세요." /> 
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>전화번호</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_Phone" name="mr_Phone" placeholder="전화번호를 입력해주세요." />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>배달유무</th>
+									<td>
+										<input type="radio" name="mr_DeliveryYn" value="1" checked="checked"> 예
+										<input type="radio" name="mr_DeliveryYn" value="0"> 아니오
+									</td>
+								</tr>
+								<tr>
+									<th>배달지역</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_DeliveryArea" name="mr_DeliveryArea" placeholder="배달지역을 입력해주세요." />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>좌석 수</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_Seat" name="mr_Seat" placeholder="좌석수를 입력해주세요." />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>TV 방영 유무</th>
+									<td>
+										<input type="radio" name="mr_TvYn" value="1" checked="checked"> 예
+										<input type="radio" name="mr_TvYn" value="0"> 아니오
+									</td>
+								</tr>
+								<tr>
+									<th>주차 가능 여부</th>
+									<td>
+										<input type="radio" name="mr_ParkingYn" value="1" checked="checked"> 예
+										<input type="radio" name="mr_ParkingYn" value="0"> 아니오
+									</td>
+								</tr>
+								<tr>
+									<th>영업시간</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_OpenTime" name="mr_OpenTime" placeholder="오픈시간을 입력해주세요." />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>휴일</th>
+									<td>
+										<div class="input_text_box">
+											<input type="text" id="mr_ClosingDay" name="mr_ClosingDay" placeholder="마감시간을 입력해주세요." />
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>파트너즈</th>
+									<td>
+										<input type="radio" name="mr_PartnerYn" value="1" checked="checked"> 예
+										<input type="radio" name="mr_PartnerYn" value="0"> 아니오
+									</td>
+								</tr>
+								<tr>
+									<th>업장소개</th>
+									<td>
+										<div class="textarea_box">
+											<textarea id="mr_Introduce" name="mr_Introduce" placeholder="내용을 입력해주세요."></textarea>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th>업장이미지</th>
+									<td>
+										<div class="file_area">
+											<input type="file" id="mr_img" name="mr_img" placeholder="파일을 첨부해주세요." />
+											<!-- 멀티파일업로드
+											<p>
+												<a href="javascript:;" class="btn_file_add">추가</a>
+											</p>
+											-->
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						
+						</table>
+						<div class="tbl_button_area center">
+							<a href="javascript:;" class="btn_common_red" onclick="submitForm();"><span>작성</span></a>
+							<a href="javascript:;" class="btn_common_gray" onclick="navback();"><span>목록</span></a>
+						</div>
+					</form>
+				</div>
+			</section>
+		</div>
+	</div>
+#parse("/WEB-INF/views/vm/includefile/adminscriptlink.vm")
+<script>
+
+$(document).ready(function(){
+
+	//사이드메뉴 addclass
+	$("#side_menu ul li:eq(" + 0 + ")").addClass('on');
+
+	//콘텐츠 영역과 윈도우사이즈 비교하여 side_menu높이값 부여
+	var contentHeight = $('.content_body').outerHeight(true) + 105;
+	var winHeight = $(window).height();
+	if(contentHeight < winHeight){
+		$('#side_menu').css({'height':winHeight});
+	}else{
+		$('#side_menu').css({'height':contentHeight});
+	}
+	
+	var fileUploadArea;
+	var fileUploadArea = fileUploadArea + '<tr>';
+	var fileUploadArea = fileUploadArea + '<th>첨부파일</th>';
+	var fileUploadArea = fileUploadArea + '<td>';
+	var fileUploadArea = fileUploadArea + '<div class="file_area">';
+	var fileUploadArea = fileUploadArea + '<input type="file" id="" name="" placeholder="파일을 첨부해주세요." />';
+	var fileUploadArea = fileUploadArea + '<p>';
+	var fileUploadArea = fileUploadArea + '<a href="javascript:;" class="btn_file_delete">삭제</a>';
+	var fileUploadArea = fileUploadArea + '</p>';
+	var fileUploadArea = fileUploadArea + '</div>';
+	var fileUploadArea = fileUploadArea + '</td>';
+	var fileUploadArea = fileUploadArea + '</tr>';
+	
+	$(document).on('click', '.btn_file_add', function(){
+		$(this).parent().parent().parent().parent().parent().append(fileUploadArea);
+	});
+	$(document).on('click', '.btn_file_delete', function(){
+		$(this).parent().parent().parent().parent().remove();
+	});
+	
+	//지역카테고리 이벤트
+	$('#mlc1_No').change(function() {
+	   //기능구현
+	   var selectedVal = $('#mlc1_No option:selected').val();
+	   console.log(selectedVal);
+	   loadMlc2Combo(selectedVal);
+	});	
+
+});
+
+function submitForm(){
+
+	if(resFormValidation()){
+		$('#restaurantform').submit();
+	}else{
+		return false;
+	}
+	
+}
+
+function loadMlc2Combo($selectedVal){
+	jQuery.ajax({
+        url: '/travel/localcategorylist',
+        type: 'GET',
+        data: {mlc1_no : $selectedVal},
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8', 
+        dataType: 'json',
+	 beforeSend:function() {
+					$("#mlc2_No").html("<option value='' selected='selected'>===소지역선택===</option>")
+	 }, 
+        success:function(args){
+	 		
+	 		$.each(args, function(key,state) {
+		        $("#mlc2_No").append('<option value="' + key + '">' + state + '</option>');
+		    });
+		    
+	  }
+    });
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="front.restaurant">
+
+	<resultMap type="com.momukji.mfront.domain.RestaurantVO" id="selectRestaurant-result">
+		<result column="ROWNUM" 			 property="rowNum"/>
+		<result column="MR_NO" 				 property="mr_No"/>
+		<result column="MR_ID" 				 property="mr_Id"/>
+		<result column="MR_NAME" 		     property="mr_Name"/>
+		<result column="MR_POSITION_LAT" 	 property="mr_Position_Lat"/>
+		<result column="MR_POSITION_LNG"	 property="mr_Position_Lng"/>
+		<result column="MR_ADDRESS" 		 property="mr_Address"/>
+		<result column="MR_PHONE" 		 	 property="mr_Phone"/>
+		<result column="MR_PARTNERYN" 		 property="mr_PartnerYn"/>
+		<result column="MR_TVYN" 			 property="mr_TvYn"/>
+		<result column="MR_PARKINGYN" 		 property="mr_ParkingYn"/>
+		<result column="MR_DELIVERYYN" 		 property="mr_DeliveryYn"/>
+		<result column="MR_DELIVERYAREA"	 property="mr_DeliveryArea"/>
+		<result column="MR_SEAT"			 property="mr_Seat"/>
+		<result column="MR_OPENTIME"		 property="mr_OpenTime"/>
+		<result column="MR_CLOSINGDAY"		 property="mr_ClosingDay"/>
+		<result column="MR_INTRODUCE" 		 property="mr_Introduce"/>
+		<result column="MR_INSERT" 			 property="mr_Insert"/>
+		<result column="MR_UPDATE" 			 property="mr_Update"/>
+		<result column="MFC_NO" 			 property="mfc_No"/>
+		<result column="MLC1_NO" 			 property="mlc1_No"/>
+		<result column="MLC2_NO" 			 property="mlc2_No"/>
+		<result column="MRI_RESIMG_URL" 	 property="mri_Img_Url"/>
+		<result column="MRI_RESIMG_NAME"     property="mri_ResImg_Name"/>
+		<result column="MRVC_TODAYCOUNT" 	 property="mrvc_todayCount"/>
+		<result column="MRVC_TOTALCOUNT" 	 property="mrvc_totalCount"/>
+	</resultMap>
+     
+	<select id="selectRestaurant" parameterType="hashMap" resultMap="selectRestaurant-result">
+        <![CDATA[
+        	SELECT /* Restaurant_SQL.xml : front.restaurant.selectRestaurant by mobile */
+				MR.MR_NO,
+			    MR.MR_ID,
+			    MR.MR_NAME,
+			    MR.MR_POSITION_LAT,
+			    MR.MR_POSITION_LNG,
+			    MR.MR_ADDRESS,
+			    MR.MR_PHONE,
+			    MR.MR_PARTNERYN,
+			    MR.MR_DELIVERYYN,
+			    MR.MR_TVYN,
+			    MR.MR_PARKINGYN,
+			    MR.MR_DELIVERYAREA,
+			    MR.MR_SEAT,
+			    MR.MR_OPENTIME,
+			    MR.MR_CLOSINGDAY,
+			    MR.MR_INTRODUCE,
+			    MR.MFC_NO,
+			    MR.MLC1_NO,
+			    MR.MLC2_NO,
+			    MR.MR_INSERT,
+			    MRI.MRI_IMG_URL,
+			    MRI.MRI_RESIMG_NAME,
+                IFNULL(MRVC.MRVC_TODAYCOUNT,0) AS MRVC_TODAYCOUNT,
+                IFNULL(MRVC.MRVC_TOTALCOUNT,0) AS MRVC_TOTALCOUNT
+			FROM momukji.MRESTAURANT MR
+				LEFT JOIN momukji.MRESIMG MRI ON MR.MR_NO = MRI.MR_NO
+                LEFT JOIN momukji.MRESVISITCOUNT MRVC ON MR.MR_NO = MRVC.MR_NO
+			WHERE MR.MR_NO = #{mr_no, jdbcType=VARCHAR}
+        ]]>
+    </select>
+    
+    <select id="selectRestaurantList" parameterType="hashMap" resultMap="selectRestaurant-result">
+        <![CDATA[
+        SELECT
+        		@ROWNUM := @ROWNUM + 1 AS ROWNUM,
+				MR.MR_NO,
+			    MR.MR_ID,
+			    MR.MR_NAME,
+			    MR.MR_POSITION_LAT,
+			    MR.MR_POSITION_LNG,
+			    MR.MR_ADDRESS,
+			    MR.MR_PHONE,
+			    MR.MR_PARTNERYN,
+			    MR.MR_DELIVERYYN,
+			    MR.MR_TVYN,
+			    MR.MR_PARKINGYN,
+			    MR.MR_DELIVERYAREA,
+			    MR.MR_SEAT,
+			    MR.MR_OPENTIME,
+			    MR.MR_CLOSINGDAY,
+			    MR.MR_INTRODUCE,
+			    MR.MFC_NO,
+			    MR.MLC1_NO,
+			    MR.MLC2_NO,
+			    MR.MR_INSERT,
+			    MR.MR_UPDATE,
+			    MRI.MRI_IMG_URL,
+			    MRI.MRI_RESIMG_NAME,
+                IFNULL(MRVC.MRVC_TODAYCOUNT,0) AS MRVC_TODAYCOUNT,
+                IFNULL(MRVC.MRVC_TOTALCOUNT,0) AS MRVC_TOTALCOUNT
+			FROM momukji.MRESTAURANT MR
+				LEFT JOIN momukji.MRESIMG MRI ON MR.MR_NO = MRI.MR_NO
+                LEFT JOIN momukji.MRESVISITCOUNT MRVC ON MR.MR_NO = MRVC.MR_NO
+                ,(SELECT @ROWNUM := 0) R
+        ]]>
+            <if test=' mr_name != null and mr_name != "" '>
+			WHERE MR_NAME LIKE CONCAT('%', #{mr_name, jdbcType=VARCHAR},'%')
+			</if>
+			<if test=' mr_no != null and mr_no != "" '>
+			HAVING MR_NO = #{mr_no, jdbcType=VARCHAR}
+			</if>
+			<if test=' mr_id != null and mr_id != "" '>
+			WHERE MR_ID LIKE CONCAT('%', #{mr_id, jdbcType=VARCHAR},'%')
+			</if>
+			<if test=' mr_phone != null and mr_phone != "" '>
+			WHERE MR_PHONE LIKE CONCAT('%', #{mr_phone, jdbcType=VARCHAR},'%')
+			</if>
+		<![CDATA[
+			ORDER BY ROWNUM DESC
+		]]>
+			<if test=' limit != null and limit != "" '>
+			LIMIT #{limit, jdbcType=VARCHAR} OFFSET #{page, jdbcType=VARCHAR}
+			</if>
+    </select>
+    
+    <insert id="insertRestaurant" parameterType="com.momukji.mfront.domain.RestaurantVO">
+		INSERT INTO momukji.MRESTAURANT /* Restaurant_SQL.xml : front.restaurant.insertRestaurant by mobile */
+					(MR_ID, 
+        			 MR_NAME, 
+        			 MR_POSITION_LAT, 
+        			 MR_POSITION_LNG, 
+        			 MR_ADDRESS, 
+        			 MR_PHONE, 
+          			 MR_PARTNERYN, 
+        			 MR_TVYN,
+        			 MR_PARKINGYN,
+        			 MR_DELIVERYYN, 
+         			 MR_DELIVERYAREA, 
+        			 MR_SEAT, 
+         			 MR_OPENTIME, 
+         			 MR_CLOSINGDAY, 
+        			 MR_INTRODUCE, 
+       				 MFC_NO, 
+         			 MLC1_NO,
+			    	 MLC2_NO) 
+			VALUES 
+					(#{mr_Id, jdbcType=VARCHAR}, 
+					 #{mr_Name, jdbcType=VARCHAR}, 
+					 #{mr_Position_Lat, jdbcType=VARCHAR}, 
+					 #{mr_Position_Lng, jdbcType=VARCHAR}, 
+					 #{mr_Address, jdbcType=VARCHAR}, 
+					 #{mr_Phone, jdbcType=VARCHAR}, 
+					 #{mr_PartnerYn, jdbcType=VARCHAR}, 
+					 #{mr_TvYn, jdbcType=VARCHAR}, 
+					 #{mr_ParkingYn, jdbcType=VARCHAR}, 
+					 #{mr_DeliveryYn, jdbcType=VARCHAR}, 
+					 #{mr_DeliveryArea, jdbcType=VARCHAR}, 
+					 #{mr_Seat, jdbcType=VARCHAR}, 
+					 #{mr_OpenTime, jdbcType=VARCHAR}, 
+					 #{mr_ClosingDay, jdbcType=VARCHAR}, 
+					 #{mr_Introduce, jdbcType=VARCHAR}, 
+					 #{mfc_No, jdbcType=VARCHAR}, 
+					 #{mlc1_No, jdbcType=VARCHAR},
+					 #{mlc2_No, jdbcType=VARCHAR})
+			<selectKey keyProperty="mr_No" resultType="Integer" order="AFTER">
+			    SELECT LAST_INSERT_ID()
+			</selectKey>
+	</insert>
+	
+	<update id="modifyRestaurant" parameterType="hashMap">
+	<![CDATA[
+		UPDATE momukji.MRESTAURANT /* Restaurant_SQL.xml : front.restaurant.updateRestaurant by mobile */
+		SET 
+			MR_ID=#{mr_Id, jdbcType=VARCHAR},
+			MR_NAME=#{mr_Name, jdbcType=VARCHAR},
+			MR_POSITION_LAT=#{mr_Position_Lat, jdbcType=VARCHAR},
+			MR_POSITION_LNG=#{mr_Position_Lng, jdbcType=VARCHAR},
+			MR_ADDRESS=#{mr_Address, jdbcType=VARCHAR},
+			MR_PHONE=#{mr_Phone, jdbcType=VARCHAR},
+			MR_PARTNERYN=#{mr_PartnerYn, jdbcType=VARCHAR},
+			MR_TVYN=#{mr_TvYn, jdbcType=VARCHAR},
+			MR_DELIVERYYN=#{mr_DeliveryYn, jdbcType=VARCHAR},
+			MR_DELIVERYAREA=#{mr_DeliveryArea, jdbcType=VARCHAR},
+			MR_PARKINGYN=#{mr_ParkingYn, jdbcType=VARCHAR},
+			MR_SEAT=#{mr_Seat, jdbcType=VARCHAR},
+			MR_OPENTIME=#{mr_OpenTime, jdbcType=VARCHAR},
+			MR_CLOSINGDAY=#{mr_ClosingDay, jdbcType=VARCHAR},
+			MR_INTRODUCE=#{mr_Introduce, jdbcType=VARCHAR},
+			MFC_NO=#{mfc_No, jdbcType=VARCHAR},
+			MLC1_NO=#{mlc1_No, jdbcType=VARCHAR}, 
+			MLC2_NO= #{mlc2_No, jdbcType=VARCHAR}
+		WHERE MR_NO=#{mr_No, jdbcType=VARCHAR}
+	]]>
+	</update>
+	
+	<insert id="insertResImg" parameterType="hashMap">
+	<![CDATA[
+		INSERT INTO momukji.MRESIMG /* Restaurant_SQL.xml : front.restaurant.insertResImg by mobile */
+		 			(MRI_IMG_URL,
+		 			MRI_RESIMG_NAME,
+		 			MRI_RESIMG_ORGNAME,
+		 			MR_NO) 
+		 	VALUES (#{mri_Img_Url, jdbcType=VARCHAR},
+		 			#{mri_Img_Name, jdbcType=VARCHAR},
+		 			#{mri_Img_OrgName, jdbcType=VARCHAR},
+  	 			 	#{mr_No, jdbcType=VARCHAR})
+	]]>
+	</insert>
+	
+	<update id="modifyResImg" parameterType="hashMap">
+	<![CDATA[
+		UPDATE `momukji`.`MRESIMG` /* Restaurant_SQL.xml : front.restaurant.updateResImg by mobile */
+		SET 
+			MRI_IMG_URL=#{mri_Img_Url, jdbcType=VARCHAR},
+			MRI_RESIMG_NAME=#{mri_Img_Name, jdbcType=VARCHAR},
+			MRI_RESIMG_ORGNAME=#{mri_Img_OrgName, jdbcType=VARCHAR}
+		WHERE MR_NO=#{mr_No, jdbcType=VARCHAR}
+	]]>
+	</update>
+	
+	<delete id="deleteRestaurant" parameterType="com.momukji.mfront.domain.RestaurantVO">
+	<![CDATA[
+		UPDATE  TGOODSCOMMENT /* Restaurant_SQL.xml : front.Restaurant_SQL.deleteGoodsComment by mobile */
+		   SET	DELETE_YN	 	= #{deleteYn, jdbcType=VARCHAR},
+				MODIFY_ID 		= #{modifyId, jdbcType=VARCHAR},
+				MODIFY_DATE 	= SYSDATE
+		 WHERE  COMMENT_SEQ 	= #{commentSeq, jdbcType=NUMERIC}
+		   AND  CUST_NO         = #{custNo, jdbcType=VARCHAR}
+	]]>
+	</delete>
+     
+    <insert id="insertResVisitCount" parameterType="hashMap">
+	<![CDATA[
+		INSERT /* Restaurant_SQL.xml : front.Restaurant_SQL.insertResVisitCount by mobile */
+			INTO `momukji`.`MRESVISITCOUNT` 
+				(`MRVC_TODAYCOUNT`, `MRVC_TOTALCOUNT`, `MR_NO`) 
+		    VALUES ('0', '0', #{mr_No, jdbcType=VARCHAR})
+	]]>
+	</insert>
+	
+	<update id="updateResVisitCount" parameterType="hashMap">
+	<![CDATA[
+		UPDATE /* Restaurant_SQL.xml : front.Restaurant_SQL.updateResVisitCount by mobile */
+				momukji.MRESVISITCOUNT MRVC
+			SET MRVC.MRVC_TODAYCOUNT = 
+			CASE 
+				WHEN DATE(MRVC.MRVC_UPDATE) = current_date()
+				THEN MRVC.MRVC_TODAYCOUNT + 1
+			ELSE 1
+			END
+			, MRVC.MRVC_TOTALCOUNT = MRVC.MRVC_TOTALCOUNT + 1
+			WHERE MRVC.MR_NO = #{mr_no, jdbcType=VARCHAR}
+	]]>
+	</update>
+	
+	<resultMap type="com.momukji.mfront.domain.model.LocalCategory" id="selectLocalCategory-result">
+		<result column="MLC1_NO" 	 property="mlc1_No"/>
+		<result column="MLC2_NO" 	 property="mlc2_No"/>
+		<result column="MLC2_NAME" 	 property="mlc2_Name"/>
+	</resultMap>
+	
+	<select id="selectLocalCategoryList" parameterType="hashMap" resultMap="selectLocalCategory-result">
+	<![CDATA[
+		SELECT * 
+			FROM momukji.MLOCALCATEGORY_DEPTH2 
+		    WHERE MLC1_NO=#{mlc1_no, jdbcType=VARCHAR};
+	]]>
+	</select>
+	
+    <update id="updateLocalCategoryCount" parameterType="hashMap">
+	<![CDATA[
+		UPDATE momukji.MLOCALCATEGORY_DEPTH2
+			SET MLC2_COUNT = MLC2_COUNT + 1
+		    WHERE MLC2_NO = #{mlc2_No, jdbcType=VARCHAR}
+	]]>
+	</update>
+	
+</mapper>

@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ko">
+<head>
+#parse("/WEB-INF/views/vm/includefile/header.vm")
+
+#set($nowlat = $session.getAttribute("nowlat"))
+#set($nowlng = $session.getAttribute("nowlng"))
+</head>
+<body>
+	<div class="wrapper">
+		<!-- header -->
+		<header class="header">
+			<h1><a href="javascript:;"><img src="/resources/images/common/img_header_logo.png" alt="모먹지" /></a></h1>
+			<button type="button" class="btn_gnb" title="네비게이션 보기"></button>
+			<button type="button" class="btn_show_filter" title="필터 보기"></button>
+			<div class="header_filter">
+				<button type="button" class="btn_hide_filter" title="필터 숨기기"></button>	
+				<ul>
+					<li>
+						<input type="radio" id="sort01" mainsort="0" name="list_sorting" checked="checked" />
+						<label for="sort01">거리순 보기</label>
+					</li>
+					<li>
+						<input type="radio" id="sort02" mainsort="1" name="list_sorting" />
+						<label for="sort02">평점순 보기</label>
+					</li>
+				</ul>
+			</div>
+		</header>
+		<!-- slide nav -->
+		<div class="nav_dim_area"></div>
+		<nav class="slide_nav">
+			<button type="button" id="" name="" class="btn_slide_nav_close"></button>
+			<div class="nav_box">
+				<div class="top">
+					<img src="/resources/images/common/img_header_logo.png" alt="모먹지" />
+				</div>
+				<div class="bottom">
+					<div class="user_info">
+					#if($sessioncount > 0)
+						<p class="name">$userSession.mc_Name</p>
+						<p class="email">$userSession.mc_Email</p>
+						<a href="javascript:;" class="btn_modify_info">회원정보 수정</a>
+					</div>
+					<ul class="gnb">
+							<li><a href="javascript:;">내정보</a></li>
+							<li><a href="javascript:;" onclick="logOutAjaxLoad($!{userSession.mc_No});">로그아웃</a></li>
+							<!--<li><a href="javascript:;">즐겨찾기</a></li>-->
+					</ul>
+					#else
+						<p class="email">로그인을 해주시기바랍니다</p>
+						<a href="javascript:;" class="btn_modify_info" onclick="goPage('/customer/login');">로그인</a>
+					</div>
+					<ul class="gnb">
+							<li><a href="javascript:;" onclick="goPage('/customer/join/1');">회원가입</a></li>
+					</ul>
+					#end
+				</div>
+				<button type="button" class="btn_kakao">
+					<img src="/resources/images/common/ico_gnb_kakao.png" alt="" />
+					실시간 상담하기
+				</button>
+			</div>
+		</nav>
+		<!-- main container -->
+		<div class="common_container">
+			<nav class="category_tab">
+				<ul>
+					<li><a href="javascript:;" onclick="goPage('/travel/category');">모먹지여행</a></li>
+					<li class="curr"><a href="javascript:;">모먹지나우</a></li>
+					<li><a href="javascript:;" onclick="alert('이벤트 준비중입니다.');">이벤트</a></li>
+				</ul>
+			</nav>
+			<div class="now_list">
+			</div>
+			<div id="console" style="width:200px; border:5px; font-size:20px"></div>
+			<nav class="food_category">
+				<div class="category_list">
+					<!-- 선택된 item 에 curr 클래스 추가 -->
+					<div class="item recommend curr" mfc_no="1">
+						<a href="javascript:;"><span class="ico"></span>추천</a>
+					</div>
+					<div class="item hansik" mfc_no="2">
+						<a href="javascript:;"><span class="ico"></span>한식</a>
+					</div>
+					<div class="item joongsik" mfc_no="3">
+						<a href="javascript:;"><span class="ico"></span>중식</a>
+					</div>
+					<div class="item ilsik" mfc_no="4">
+						<a href="javascript:;"><span class="ico"></span>일식</a>
+					</div>
+					<div class="item yangsik" mfc_no="5">
+						<a href="javascript:;"><span class="ico"></span>양식</a>
+					</div>
+					<div class="item yookryu" mfc_no="6">
+						<a href="javascript:;"><span class="ico"></span>육류</a>
+					</div>
+					<div class="item eoryu" mfc_no="7">
+						<a href="javascript:;"><span class="ico"></span>어류</a>
+					</div>
+					<div class="item joryu" mfc_no="8">
+						<a href="javascript:;"><span class="ico"></span>조류</a>
+					</div>
+					<div class="item boonsik" mfc_no="9">
+						<a href="javascript:;"><span class="ico"></span>분식</a>
+					</div>
+					<div class="item jjimtang" mfc_no="10">
+						<a href="javascript:;"><span class="ico"></span>찜/탕</a>
+					</div>
+					<div class="item bread" mfc_no="11">
+						<a href="javascript:;"><span class="ico"></span>빵</a>
+					</div>
+					<div class="item fastfood" mfc_no="12">
+						<a href="javascript:;"><span class="ico"></span>패스트푸드</a>
+					</div>
+					<div class="item jook" mfc_no="13">
+						<a href="javascript:;"><span class="ico"></span>죽</a>
+					</div>
+					<div class="item special" mfc_no="14">
+						<a href="javascript:;"><span class="ico"></span>이색</a>
+					</div>
+					<div class="item cafe" mfc_no="15">
+						<a href="javascript:;"><span class="ico"></span>카페</a>
+					</div>
+					<div class="item alcohol" mfc_no="16">
+						<a href="javascript:;"><span class="ico"></span>주류</a>
+					</div>
+				</div>
+				<div class="img_mask"><img src="/resources/images/common/bg_list_menu_mask.png" alt="" /></div>
+			</nav>
+		</div>
+		#parse("/WEB-INF/views/vm/includefile/footer.vm")
+	</div>
+
+<!-- 아래 로딩 화면에 표시하려면 page_loading에 show 클래스 추가 -->
+<div class="page_loading">
+	<div class="dim_area"></div>
+	<div class="loading_cont">
+		<strong><img src="/resources/images/common/img_loading_visual.png" alt="화면 로딩중 ..." /></strong>
+		<div class="animate">
+		  <div class="ball01"></div>
+		  <div class="ball02"></div>
+		  <div class="ball03"></div>
+		  <div class="ball04"></div>
+		  <div class="ball05"></div>
+		</div>
+	</div>
+</div>
+
+<!-- 사진 상세보기 레이어팝업 -->
+<article class="layer_popup_wrap picture_detail">
+	<div class="dim_area" onclick="commonLayerClose('picture_detail')"></div>
+	<div class="layer_cont">
+		<!-- 해당 이미지 출력 -->
+		<img src="images/img_boonsik_sample.jpg" alt="" class="picture" onerror="this.src = '/resources/images/common/bg_food_default.gif'"/>
+	</div>
+</article>
+
+#parse("/WEB-INF/views/vm/includefile/scriptlink.vm")
+
+<script type="text/javascript">
+
+
+
+var nowlat = '';
+var nowlng = '';
+var nowpage = 0;
+var mainsort = 0;
+var mfc_no = 1;
+
+var msg;
+
+window.onload=function(){
+
+	nowlat = '$!{nowlat}';
+	nowlng = '$!{nowlng}';
+
+	//위치정보를 확인할 수 있는 브라우저인지 확인
+    if(navigator.geolocation == undefined){
+		alert("위치 정보 기능을 지원하지 않습니다!")
+        return;
+    }else{
+    
+    	if(nowlat == '' && nowlng == ''){
+	    	$( ".page_loading" ).show();
+	    	showData();
+    	}else{
+    		momukjinowajaxLoad(nowlat, nowlng, '0', mfc_no, $('.wrapper>.common_container>.now_list'), "/now/ajax", nowpage);
+    	}
+    }
+}
+ 
+//현재 위치 정보 확인
+function showData(){
+    navigator.geolocation.getCurrentPosition(success, fail); //현재 위치 정보를 조사하고 성공 실패 했을시 호출되는 함수 설정
+}
+ 
+function success(position) { //성공시
+    $( ".page_loading" ).hide();
+    for(var property in position.coords) { //반복문 돌면서 출력
+        console.log("Key 값:"+property+" 정보:"+position.coords[property]);
+    }
+    nowlat=position.coords["latitude"];
+    nowlng=position.coords["longitude"];
+	
+	mfc_no = 1;    
+    //sort, category, path, url
+    momukjinowajaxLoad(nowlat, nowlng, '0', mfc_no, $('.wrapper>.common_container>.now_list'), "/now/ajax", nowpage);
+
+}
+ 
+//실패시
+function fail(err){
+    switch (err.code){
+        case err.PERMISSION_DENIED:
+            msg = "사용자 거부";
+        break;
+ 
+        case err.PERMISSION_UNAVAILABLE:
+            msg = "지리정보를 얻을 수 없음";
+        break;
+ 
+        case err.TIMEOUT:
+            msg = "시간초과";
+        break;
+ 
+        case err.UNKNOWN_ERROR:
+            msg = "알 수 없는 오류 발생";
+        break;
+    }
+    	$( ".page_loading" ).hide();
+        alert(msg);
+}
+  
+function log(msg){
+    console.log(msg);
+}
+
+//herder 필터
+$('.header .btn_show_filter').on('click', function(){
+	$('.header .header_filter').addClass('show');
+});
+$('.header .header_filter .btn_hide_filter').on('click', function(){
+	$(this).closest('.header_filter').removeClass('show');
+});
+
+//카테고리 rolling
+var owlFoodCategory = $('.food_category .category_list');
+owlFoodCategory.owlCarousel({
+	items : 6, 
+	paginationSpeed : 400
+});
+
+//카테고리 리스트 클릭 이벤트
+$('.food_category .category_list span').click(function(event) {
+	
+	var target = $(this).parent().parent();
+	
+	console.log(target.attr('class')+target.attr('class').indexOf('curr'));
+	
+	if(target.attr('class').indexOf('curr') > -1)
+		return;
+	
+	$('.food_category .category_list div').removeClass('curr');
+	
+	
+	console.log( "clicked: " + target.attr('class') + target.attr('mfc'));
+	target.addClass( "curr" );
+	nowpage = 0;
+	mfc_no = target.attr('mfc_no');
+	//sort, category, path, url
+    momukjinowajaxLoad(nowlat, nowlng, mainsort, mfc_no, $('.wrapper>.common_container>.now_list'), "/now/ajax", nowpage);
+
+});
+
+//검색 필터 클릭 이벤트
+$('.header .header_filter ul li input').click(function(event) {
+	
+	var target = $(this);
+	mainsort = target.attr('mainsort');
+	nowpage = 0;
+	
+	//sort, category, path, url
+	momukjinowajaxLoad(nowlat, nowlng, mainsort, mfc_no, $('.wrapper>.common_container>.now_list'), "/now/ajax", nowpage);
+  
+});
+
+</script>
+</body>
+</html>

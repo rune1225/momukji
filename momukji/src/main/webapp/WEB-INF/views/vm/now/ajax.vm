@@ -1,0 +1,41 @@
+#if($restaurantList.size()>0)
+#if($page==0)
+<ul>
+#end
+	#foreach($res in $restaurantList)
+	<li>
+		<div>
+			<div class="picture">
+				<a href="javascript:;" onclick="pictureLayerOpen('picture_detail', '$!{res.mmi_Img_Url}$!{res.mmi_MenuImg_Name}');">
+				##<a href="javascript:;" onclick="pictureLayerOpen('picture_detail', 'm.momukji.com/upload/images/menu/9/9_20161117102211.jpg');">
+					<img src="$!{res.mmi_Img_Url}$!{res.mmi_MenuImg_Name}" alt="" class="food_img" onerror="this.src = '/resources/images/common/bg_food_default.gif'"/>
+				</a>
+				<img src="/resources/images/common/$!{res.mfc_Img_Name}" alt="$!{res.mfc_Name}" class="category"/>
+			</div>
+			<div class="store_info" id="$!{res.mr_Id}">
+				<a href="javascript:;" onclick="goPage('/menu/view/$!{res.mr_No}')">
+				<p class="name">$!{res.mr_Name}</p>
+				<p class="menu">$!{res.mm_Name}</p>
+				<div class="infos">
+					<div class="op">
+						<span class=#if($!{res.mr_ParkingYn}=="1")"parking on"#else"parking"#end></span>
+						<span class=#if($!{res.mr_DeliveryYn}=="1")"delivery on"#else"delivery"#end></span>
+						<span class=#if($!{res.mr_TvYn}=="1")"tv on"#else"tv"#end></span>
+					</div>
+					<div class="data">
+						<span class="distance">$!{res.distance} km</span>
+						<span class="favorite">$!{res.mr_Score_Sum}</span>
+					</div>
+				</div>
+				</a>
+			</div>
+		</div>
+		<a href="javascript:;" class="btn_view_map" onclick="goPage('/now/map?mr_no=$!{res.mr_No}')">지도보기</a>
+	</li>
+	#end
+#if($page==0)
+</ul>
+#end
+#else
+<p class="no_data">검색결과가 없습니다.</p>
+#end

@@ -1,0 +1,53 @@
+#if($page == 0)
+<div class="review">
+	<div class="write_btn">
+		<button type="button" id="" name="" class="btn_write_review" onclick="commonLayerOpen('write_review','$!{sessionflag}')"><img src="/resources/images/common/ico_write_review.png" alt="" />리뷰 작성하기</button>
+	</div>
+
+	<ul class="review_list">
+#end
+		#foreach($review in $menureviewList)
+		<li>
+			<div class="photo">
+				<a href="javascript:;" onclick="pictureLayerOpen('picture_detail', '$!{review.mmi_Img_Url}$!{review.mmi_MenuImg_Name}');">
+					<img src="$!{review.mmi_Img_Url}$!{review.mmi_MenuImg_Name}" alt="" onerror="this.src = '/resources/images/common/bg_food_default.gif'"/>
+				</a>
+			</div>
+			<div class="info">
+				<div class="top">
+					<span class="user_name">$review.mc_Name</span>
+					<span class="date">$DateUtil.getFormattedDate($review.mmr_Insert, "yyyy.MM.dd")</span>
+					#if($review.mmr_Score == 5.0)
+					<img src="/resources/images/common/img_point50.gif" alt="5.0" class="grade" />
+					#elseif($review.mmr_Score > 4.4 && $review.mmr_Score < 5.0)
+					<img src="/resources/images/common/img_point45.gif" alt="4.5" class="grade" />
+					#elseif($review.mmr_Score > 3.9 && $review.mmr_Score < 4.5)
+					<img src="/resources/images/common/img_point40.gif" alt="4.0" class="grade" />
+					#elseif($review.mmr_Score > 3.4 && $review.mmr_Score < 4.0)
+					<img src="/resources/images/common/img_point35.gif" alt="3.5" class="grade" />
+					#elseif($review.mmr_Score > 2.9 && $review.mmr_Score < 3.5)
+					<img src="/resources/images/common/img_point30.gif" alt="3.0" class="grade" />
+					#elseif($review.mmr_Score > 2.4 && $review.mmr_Score < 3.0)
+					<img src="/resources/images/common/img_point25.gif" alt="2.5" class="grade" />
+					#elseif($review.mmr_Score > 1.9 && $review.mmr_Score < 2.5)
+					<img src="/resources/images/common/img_point20.gif" alt="2.0" class="grade" />
+					#elseif($review.mmr_Score > 1.4 && $review.mmr_Score < 2.0)
+					<img src="/resources/images/common/img_point15.gif" alt="1.5" class="grade" />
+					#elseif($review.mmr_Score > 0.9 && $review.mmr_Score < 1.5)
+					<img src="/resources/images/common/img_point10.gif" alt="1.0" class="grade" />
+					#elseif($review.mmr_Score > 0.4 && $review.mmr_Score < 1.0)
+					<img src="/resources/images/common/img_point05.gif" alt="0.5" class="grade" />
+					#elseif($review.mmr_Score < 0.5)
+					<img src="/resources/images/common/img_point00.gif" alt="0" class="grade" />
+					#end
+				</div>
+				<div class="bottom">
+					<p>$review.mmr_Contents</p>
+				</div>
+			</div>
+		</li>
+		#end
+#if($page == 0)
+	</ul>
+</div>
+#end

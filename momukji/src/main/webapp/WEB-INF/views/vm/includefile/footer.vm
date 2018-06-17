@@ -1,0 +1,14 @@
+<!-- footer -->
+<footer class="footer">
+	<div class="left_box">
+		<div class="links">
+			<a href="javascript:;">이용약관</a>
+			<a href="javascript:;">개인정보 처리방침</a>
+			<a href="javascript:;">제휴요청</a>
+		</div>
+		<p class="copyright"><img src="/resources/images/common/txt_footer_copyright.png" alt="COPYRIGHT 2016  MHONE RIGHTS RESERVED." /></p>
+	</div>
+	<div class="right_box">
+		<a href="tel:16448270"><img src="/resources/images/common/btn_footer_call.png" alt="전화하기 | 1644-8270" /></a>
+	</div>
+</footer>

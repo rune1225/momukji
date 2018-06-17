@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8">
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+	<title>Pixelab Voc System</title>
+	<link rel="stylesheet" href="../css/reset.css">
+	<link rel="stylesheet" href="../css/common.css">
+	<script src="../js/jquery-1.9.1.min.js"></script>
+	<script src="../js/jquery-ui-1.10.3.custom.min.js"></script>
+	<script src="../js/html5shiv.js"></script>
+	<script src="../js/common.js"></script>
+	<script>
+		$(document).ready(function(){
+			//콘텐츠 영역과 윈도우사이즈 비교하여 side_menu높이값 부여
+			var contentHeight = $('.content_body').outerHeight(true) + 105;
+			var winHeight = $(window).height();
+			if(contentHeight < winHeight){
+				$('#side_menu').css({'height':winHeight});
+			}else{
+				$('#side_menu').css({'height':contentHeight});
+			}
+			
+			var fileUploadArea;
+			var fileUploadArea = fileUploadArea + '<tr>';
+			var fileUploadArea = fileUploadArea + '<th>첨부파일</th>';
+			var fileUploadArea = fileUploadArea + '<td>';
+			var fileUploadArea = fileUploadArea + '<div class="file_area">';
+			var fileUploadArea = fileUploadArea + '<input type="file" id="" name="" placeholder="파일을 첨부해주세요." />';
+			var fileUploadArea = fileUploadArea + '<p>';
+			var fileUploadArea = fileUploadArea + '<a href="javascript:;" class="btn_file_delete">삭제</a>';
+			var fileUploadArea = fileUploadArea + '</p>';
+			var fileUploadArea = fileUploadArea + '</div>';
+			var fileUploadArea = fileUploadArea + '</td>';
+			var fileUploadArea = fileUploadArea + '</tr>';
+			
+			$(document).on('click', '.btn_file_add', function(){
+				$(this).parent().parent().parent().parent().parent().append(fileUploadArea);
+			});
+			$(document).on('click', '.btn_file_delete', function(){
+				$(this).parent().parent().parent().parent().remove();
+			});
+			//기존 업로드 되있던 파일 관리
+			$(document).on('click', '.before_file_del', function(){
+				if($(this).parent('li').siblings('li').length == 0){
+					$(this).parent('li').parent('ul').parent('.file_area').parent('td').parent('tr').remove();
+				}
+				$(this).parent('li').remove();
+			});
+		});
+	</script>
+</head>
+<body>
+	<div id="wrapper" style="background:none;">
+		<div id="sub_container">
+			<section id="side_menu">
+				<h1><a href="javascript:;"><img src="../images/voc/voc_logo.png" alt="Voc System / www.pixelab.co.kr/voc" /></a><h1>
+				<ul>
+					<li class="on"><a href="javascript:;">업무진행관련 게시판</a></li>
+					<li><a href="javascript:;">이슈사항</a></li>
+					<li><a href="javascript:;">개발자 연락처</a></li>
+				</ul>
+				<footer>
+					<address><img src="../images/voc/left_copyright.png" alt="copyright(c) 2015. All Rights Reserved." /></address>
+				</footer>
+			</section>
+			<section id="content">
+				<div class="content_header">
+					<div>
+						<h2><img src="../images/voc/client_logo.gif" alt="이노피아테크" /></h2>
+						<strong>이노피아테크 반응형웹 프로젝트</strong>
+						<div class="login_info">
+							<p><span>클라이언트님</span> 로그인 하셨습니다.</p>
+							<a href="javascript:;"><img src="../images/voc/btn_logout.gif" alt="로그아웃" /></a>
+						</div>
+					</div>
+				</div>
+				<div class="content_body">
+					<h3>업무진행관련 게시판</h3>
+					<table class="common_tbl write">
+						<colgroup>
+							<col style="width:140px;" />
+							<col style="width:*%;" />
+						</colgroup>
+						<tbody>
+							<tr>
+								<th>제목</th>
+								<td>
+									<div class="input_text_box">
+										<input type="text" id="" name="" placeholder="제목을 입력해주세요." />
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th>내용</th>
+								<td>
+									<div class="textarea_box">
+										<textarea id="" name="" placeholder="내용을 입력해주세요."></textarea>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th>첨부파일</th>
+								<td>
+									<div class="file_area">
+										<ul>
+											<li><span>contest.jpg</span> <a href="javascript:;" class="before_file_del">X</a></li>
+											<li><span>contest12342.pdf</span> <a href="javascript:;" class="before_file_del">X</a></li>
+											<li><span>contest12342.pdf</span> <a href="javascript:;" class="before_file_del">X</a></li>
+										</ul>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th>첨부파일</th>
+								<td>
+									<div class="file_area">
+										<input type="file" id="" name="" placeholder="파일을 첨부해주세요." />
+										<p>
+											<a href="javascript:;" class="btn_file_add">추가</a>
+										</p>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="tbl_button_area center">
+						<a href="javascript:;" class="btn_common_red"><span>작성</span></a>
+						<a href="javascript:;" class="btn_common_gray"><span>목록</span></a>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+</body>
+</html>

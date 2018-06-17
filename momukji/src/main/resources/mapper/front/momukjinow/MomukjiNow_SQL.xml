@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="front.momukjinow">
+
+	<resultMap type="com.momukji.mfront.domain.RestaurantVO" id="selectMomukjiNow-result">
+		<result column="MR_NO" 				 property="mr_No"/>
+		<result column="MR_ID" 				 property="mr_Id"/>
+		<result column="MR_NAME" 		     property="mr_Name"/>
+		<result column="MR_POSITION_LAT" 	 property="mr_Position_Lat"/>
+		<result column="MR_POSITION_LNG"	 property="mr_Position_Lng"/>
+		<result column="MR_ADDRESS" 		 property="mr_Address"/>
+		<result column="MR_PHONE" 		 	 property="mr_Phone"/>
+		<result column="MR_PARTNERYN" 		 property="mr_PartnerYn"/>
+		<result column="MR_TVYN" 			 property="mr_TvYn"/>
+		<result column="MR_DELIVERYYN" 		 property="mr_DeliveryYn"/>
+		<result column="MR_PARKINGYN" 		 property="mr_ParkingYn"/>
+		<result column="MR_INTRODUCE" 		 property="mr_Introduce"/>
+		<result column="MFC_NO" 			 property="mfc_No"/>
+		<result column="MFC_NAME" 			 property="mfc_Name"/>
+		<result column="MFC_IMG_NAME" 		 property="mfc_Img_Name"/>
+		<result column="MLC1_NO" 			 property="mlc1_No"/>
+		<result column="MLC2_NO" 			 property="mlc2_No"/>
+		<result column="MRI_IMG_URL" 	 	 property="mri_Img_Url"/>
+		<result column="MRI_RESIMG_NAME"     property="mri_ResImg_Name"/>
+		<result column="MMI_IMG_URL" 	 	 property="mmi_Img_Url"/>
+		<result column="MMI_MENUIMG_NAME"    property="mmi_MenuImg_Name"/>
+		<result column="MMI_MENUIMG_THUMB"   property="mmi_MenuImg_Thumb"/>
+		<result column="MM_NAME" 	 		 property="mm_Name"/>
+		<result column="MM_TYPE" 	 		 property="mm_Type"/>
+		<result column="DISTANCE" 	 		 property="distance"/>
+		<result column="MR_SCORE_SUM" 	 	 property="mr_Score_Sum"/>
+	</resultMap>
+     
+     <select id="selectMomukjiNow" parameterType="hashMap" resultMap="selectMomukjiNow-result">
+        <![CDATA[
+        	SELECT /* MomukjiNow_SQL.xml : front.momukjinow.selectMomukjiNow by mobile */
+				MR.MR_NO,
+			    MR.MR_ID,
+			    MR.MR_NAME,
+			    MR.MR_POSITION_LAT,
+			    MR.MR_POSITION_LNG,
+			    MR.MR_ADDRESS,
+			    MR.MR_PHONE,
+			    MR.MR_PARTNERYN,
+			    MR.MR_DELIVERYYN,
+			    MR.MR_TVYN,
+			    MR.MR_PARKINGYN,
+			    MR.MR_INTRODUCE,
+			    MR.MFC_NO,
+			    MFC.MFC_NAME,
+			    MFC.MFC_IMG_NAME,
+			    MR.MLC1_NO,
+			    MR.MLC2_NO,
+			    MRI.MRI_IMG_URL,
+			    MRI.MRI_RESIMG_NAME,
+			    MMI.MMI_IMG_URL,
+                MMI.MMI_MENUIMG_NAME,
+                MMI.MMI_MENUIMG_THUMB,
+			    MM.MM_NAME,
+                MM.MM_TYPE,
+			    ROUND((6371 * acos( cos( radians(#{nowlat, jdbcType=VARCHAR}) ) * cos( radians( MR.MR_POSITION_LAT ) ) * cos( radians(  MR.MR_POSITION_LNG ) - radians(#{nowlng, jdbcType=VARCHAR}) ) + sin( radians(#{nowlat, jdbcType=VARCHAR}) ) * sin( radians( MR.MR_POSITION_LAT ) ) ) ), 2) as DISTANCE,
+			    IFNULL((SELECT SUM(MMR.MMR_SCORE)
+				FROM momukji.MMENUREVIEW MMR
+                LEFT JOIN momukji.MMENU MM2  ON MMR.MM_NO = MM2.MM_NO
+                WHERE MM2.MR_NO = MR.MR_NO),0) AS MR_SCORE_SUM
+			FROM momukji.MRESTAURANT MR
+				LEFT JOIN momukji.MRESIMG MRI ON MR.MR_NO = MRI.MR_NO
+				LEFT JOIN momukji.MFOODCATEGORY MFC ON MR.MFC_NO = MFC.MFC_NO
+				LEFT JOIN momukji.MMENU MM ON MR.MR_NO = MM.MR_NO
+				LEFT JOIN momukji.MMENUIMG MMI ON MM.MM_NO = MMI.MM_NO
+			HAVING DISTANCE <= 10
+		]]>
+		<choose>
+		    <when test='mfc_no == "1"'>
+				AND MR_PARTNERYN = 1
+				AND MM_TYPE = 1
+		    </when>
+		    <otherwise>
+		        AND MFC_NO = #{mfc_no, jdbcType=VARCHAR}
+				AND MM_TYPE = 1
+		    </otherwise>
+		</choose>
+		<choose>
+			<when test='mainsort == "0"'>
+			ORDER BY DISTANCE
+			</when>
+			<when test='mainsort == "1"'>
+			ORDER BY MR_SCORE_SUM DESC
+			</when>
+		</choose>
+		<![CDATA[
+			LIMIT #{limit, jdbcType=NUMERIC} OFFSET #{page, jdbcType=NUMERIC}
+        ]]>
+    </select>
+    
+    <select id="selectMomukjiNowMap" parameterType="hashMap" resultMap="selectMomukjiNow-result">
+    	<![CDATA[
+    		SELECT /* MomukjiNow_SQL.xml : front.momukjinow.selectMomukjiNowMap by mobile */
+				DISTINCT MR.MR_NO,
+			    MR.MR_ID,
+			    MR.MR_NAME,
+			    MR.MR_POSITION_LAT,
+			    MR.MR_POSITION_LNG,
+			    MR.MR_ADDRESS,
+			    MR.MR_PHONE,
+			    MR.MR_PARTNERYN,
+			    MR.MR_DELIVERYYN,
+			    MR.MR_TVYN,
+			    MR.MR_PARKINGYN,
+			    MR.MR_INTRODUCE,
+			    MR.MFC_NO,
+			    MR.MLC1_NO,
+			    MR.MLC2_NO,
+			    MRI.MRI_IMG_URL,
+			    MRI.MRI_RESIMG_NAME,
+                MM.MM_NAME,
+                MM.MM_TYPE,
+			    ROUND((6371 * acos( cos( radians(37.5840021) ) * cos( radians( MR.MR_POSITION_LAT ) ) * cos( radians(  MR.MR_POSITION_LNG ) - radians(126.8788907) ) + sin( radians(37.5840021) ) * sin( radians( MR.MR_POSITION_LAT ) ) ) ), 2) as DISTANCE,
+                ROUND(IFNULL((SELECT AVG(MMR.MMR_SCORE)
+				FROM momukji.MMENU MM LEFT JOIN momukji.MMENUREVIEW MMR ON MM.MM_NO = MMR.MM_NO
+				WHERE MM.MR_NO = MR.MR_NO AND MM.MM_NO = MMR.MM_NO),0),1) AS MR_SCORE_SUM
+			FROM momukji.MRESTAURANT MR
+				LEFT JOIN momukji.MRESIMG MRI ON MR.MR_NO = MRI.MR_NO
+                LEFT JOIN momukji.MMENU MM ON MR.MR_NO = MM.MR_NO
+			HAVING MR_NO = #{mr_no, jdbcType=VARCHAR}
+				AND MM_TYPE = 1
+    	]]>
+    </select>
+    
+</mapper>

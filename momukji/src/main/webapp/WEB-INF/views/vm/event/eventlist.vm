@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+<head>
+#parse("/WEB-INF/views/vm/includefile/header.vm")
+</head>
+<body class="gray_bg">
+	<div class="wrapper">
+		<!-- header -->
+		<header class="header">
+			<h1><a href="javascript:;"><img src="../images/common/img_header_logo.png" alt="모먹지" /></a></h1>
+			<button type="button" class="btn_gnb" title="네비게이션 보기"></button>
+		</header>
+		<!-- slide nav -->
+		<div class="nav_dim_area"></div>
+		<nav class="slide_nav">
+			<button type="button" id="" name="" class="btn_slide_nav_close"></button>
+			<div class="nav_box">
+				<div class="top">
+					<img src="../images/common/img_header_logo.png" alt="모먹지" />
+				</div>
+				<div class="bottom">
+					<div class="user_info">
+						<p class="name">윤동희</p>
+						<p class="email">jungbumtr@naver.com</p>
+						<a href="javascript:;" class="btn_modify_info">회원정보 수정</a>
+					</div>
+					<ul class="gnb">
+						<li><a href="javascript:;">내정보</a></li>
+						<li><a href="javascript:;">즐겨찾기</a></li>
+					</ul>
+				</div>			
+				<button type="button" class="btn_kakao">
+					<img src="../images/common/ico_gnb_kakao.png" alt="" />
+					실시간 상담하기
+				</button>
+			</div>
+		</nav>
+		<!-- container -->
+		<div class="common_container default no_bg">
+			<nav class="category_tab">
+				<ul>
+					<li><a href="javascript:;">모먹지나우</a></li>
+					<li><a href="javascript:;">모먹지여행</a></li>
+					<li class="curr"><a href="javascript:;">이벤트</a></li>
+				</ul>
+			</nav>
+			<div class="event">
+				<nav class="category">
+					<ul>
+						<li class="curr"><a href="javascript:;">전체</a></li>
+						<li><a href="javascript:;">쿠폰</a></li>
+						<li><a href="javascript:;">할인</a></li>
+						<li><a href="javascript:;">경품</a></li>
+						<li><a href="javascript:;">기타</a></li>
+					</ul>
+				</nav>
+				<ul class="event_list">
+					<li class="coupon">
+						<a href="javascript:;">
+							<img src="../images/img_event_sample01.jpg" alt="" />
+							<span>쿠폰</span>
+						</a>
+					</li>
+					<li class="sale">
+						<a href="javascript:;">
+							<img src="../images/img_event_sample02.jpg" alt="" />
+							<span>할인</span>
+						</a>
+					</li>
+					<li class="giveaway">
+						<a href="javascript:;">
+							<img src="../images/img_event_sample03.jpg" alt="" />
+							<span>경품</span>
+						</a>
+					</li>
+					<li class="etc">
+						<a href="javascript:;">
+							<img src="../images/img_event_sample04.jpg" alt="" />
+							<span>기타</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- footer -->
+		#parse("/WEB-INF/views/vm/includefile/footer.vm")	
+	</div>
+
+<script>
+//herder 필터
+$('.header .btn_show_filter').on('click', function(){
+	$('.header .header_filter').addClass('show');
+});
+$('.header .header_filter .btn_hide_filter').on('click', function(){
+	$(this).closest('.header_filter').removeClass('show');
+});
+</script>
+</body>
+</html>

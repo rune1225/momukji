@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ko">
+<head>
+#parse("/WEB-INF/views/vm/includefile/header.vm")
+</head>
+<body class="full_height">
+	<div class="wrapper full_height">
+		<!-- header -->
+		<header class="header line">
+			<h1 class="txt_page_title">이용약관</h1>
+			<button type="button" class="btn_page_back" title="이전페이지로 돌아가기" onclick="navback()"></button>
+		</header>
+		<!-- container -->
+		<div class="member_container join full_height">
+			<div class="form_box">
+				<form action="2">
+					<fieldset>
+						<legend class="screen_out">약관동의</legend>
+						<p class="txt_guide">
+							서비스 이용을 위해<br />
+							<span class="big">약관에 동의해 주세요!</span>
+						</p>
+						<div class="all_agree">
+							<input type="checkbox" id="all_agree" name="all_agree" />
+							<label for="all_agree">모두선택</label>
+						</div>
+						<ul class="agree_list">
+							<li>
+								<input type="checkbox" id="agree01" name="agree01" />
+								<label for="agree01">이용 약관 동의</label>
+								<button type="button" class="view_cont" onclick="commonLayerOpen('detail_terms_view')">약관보기</button>
+							</li>
+							<li>
+								<input type="checkbox" id="agree02" name="" />
+								<label for="agree02">개인정보 취급방침 동의</label>
+								<button type="button" class="view_cont" onclick="commonLayerOpen('detail_terms_view')">약관보기</button>
+							</li>
+							<li>
+								<input type="checkbox" id="agree03" name="" />
+								<label for="agree03">개인정보 제3자 제공 동의</label>
+								<button type="button" class="view_cont" onclick="commonLayerOpen('detail_terms_view')">약관보기</button>
+							</li>
+						</ul>
+						<button type="submit" id="" name="" class="btn_bottom_fix_black">동의하고 완료</button>
+					</fieldset>
+				</form>
+			</div>
+		</div>	
+	</div>
+
+<!-- 이용약관 레이어 (공통) -->
+<article class="layer_popup_wrap detail_terms_view">
+	<div class="dim_area" onclick="commonLayerClose('detail_terms_view')"></div>
+	<div class="layer_cont">
+		<h2>이용약관</h2>
+		<button href="javascript:;" class="btn_layer_close" onclick="commonLayerClose('detail_terms_view')"><img src="/resources/images/common/btn_layer_close.png" alt="레이어닫기" /></button>
+		<div class="rule">
+			<h3>제 1 장 총칙</h3>
+			<p>
+				제1조 (목적)<br />
+				이 약관은 ㈜모먹지 (이하  회사 )가 온라인으로 제공하는
+				이성정보 및 이에 부수된 제반 서비스 (이하  SNS서비스 )의 
+				이용과 관련하여 회사와 회원 간의 권리, 의무 및 책임사항, 
+				기타 필요한 사항을 규정함을 목적으로 합니다.<br /><br />
+				제2조 (용어의 정의)<br />
+				A. 이 약관에서 사용하는 용어의 정의는 다음과 같습니다.
+				1.	회사라 함은 온라인을 통하여 SNS서비스를 제공하는 
+				사업자를 의미합니다.<br />
+				2.	회원이라 함은 본 약관에 동의하고 SNS서비스 이용 
+				자격을 부여 받은 자를 의미합니다.<br />
+				3.	SNS서비스라 함은 회사가 회원에게 온라인으로 제공하는 
+				이성정보 및 이에 부수된 제반 서비스를 의미합니다.<br />
+				4.	계정(ID)이라 함은 회원을 식별과 SNS서비스 이용을 
+			</p>
+		</div>
+	</div>
+</article>
+
+#parse("/WEB-INF/views/vm/includefile/scriptlink.vm")
+<script>
+$(document).ready(function(){
+    $("#all_agree").change(function(){
+        if($("#all_agree").is(":checked")){
+            $("input:checkbox[id='agree01']").prop("checked", true);
+            $("input:checkbox[id='agree02']").prop("checked", true);
+            $("input:checkbox[id='agree03']").prop("checked", true);
+        }else{
+            $("input:checkbox[id='agree01']").prop("checked", false);
+            $("input:checkbox[id='agree02']").prop("checked", false);
+            $("input:checkbox[id='agree03']").prop("checked", false);
+        }
+    });
+});
+
+//submit
+$("form").submit(function() {
+ 	 if($("#agree01").is(":checked") && $("#agree02").is(":checked") && $("#agree03").is(":checked")) {
+    	return true;
+  	}
+  	alert("회원약관에 모두 동의해주시기 바랍니다.");
+  	return false;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko">
+<head>
+#parse("/WEB-INF/views/vm/includefile/adminheader.vm")
+</head>
+<body class="voc">
+	<div id="wrapper">
+		<section id="login_area">
+			<h1><img src="" alt="" /></h1>
+			<h2><img src="/resources/images/common/img_header_logo.png" alt="admin login" /></h2>
+			<article>
+				<h3><img src="/resources/images/admin/admin_login.png" alt="어드민 로고" /></h3>
+				<div class="input_text_case">
+					<input type="text" id="" name="" placeholder="ID" />
+				</div>
+				<div class="input_text_case">
+					<input type="password" id="" name="" placeholder="Password" />
+				</div>
+				<a href="javascript:;" class="btn_login"><span>Login Admin</span></a>
+				<p>
+					아이디/비밀번호 분실시<br />
+					<a href="mailto:no1june@naver.com"></a> 성용준 과장 메일로 연락주세요.
+				</p>
+			</article>
+			<footer>
+				<address>copyright(c) 2016. MHONE Rights Reserved.</address><!-- <img src="/resources/images/admin/voc_copyright.png" alt="copyright(c) 2016. MHONE Rights Reserved." /> -->
+			</footer>
+		</section>
+	</div>
+#parse("/WEB-INF/views/vm/includefile/adminscriptlink.vm")
+</body>
+</html>
